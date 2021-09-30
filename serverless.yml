@@ -1,0 +1,54 @@
+service: go-conf
+frameworkVersion: '2'
+
+# providers
+provider:
+  name: aws
+  runtime: nodejs12.x
+  # lambdaHashingVersion: 20201221
+  stage: dev
+  region: us-east-1
+  # environment: 
+  #   APP_KEY: ${file(./config.yml):${self:custom.stage}.APP_KEY}
+  #   APP_SECRET: ${file(./config.yml):${self:custom.stage}.APP_SECRET}
+  #   DB_PREFIX: ${file(./config.yml):${self:custom.stage}.DB_PREFIX}
+  #   CANDIDATE_TABLE: ${self:service}-${opt:stage, self:provider.stage}
+  #   CANDIDATE_EMAIL_TABLE: "candidate-email-${opt:stage, self:provider.stage}"
+
+  # iamRoleStatements:
+  #   - Effect: Allow
+  #     Action:
+  #       - dynamodb:Query
+  #       - dynamodb:Scan
+  #       - dynamodb:GetItem
+  #       - dynamodb:PutItem
+  #     Resource: "*"
+
+# functions 
+functions:
+  getToken:
+    handler: 
+      - api/auth.getToken
+    memorySize: 128
+    description: get token from api key
+    events:
+      - http: 
+          path: token
+          method: get
+
+# plugins
+plugins:
+  - serverless-offline
+  - serverless-middleware
+  - serverless-plugin-typescript
+
+
+# custom object
+custom:
+  stage: ${opt:stage, self:provider.stage}
+
+
+# package
+package:
+  exclude:
+    - node_modules/serverless-offline/**
