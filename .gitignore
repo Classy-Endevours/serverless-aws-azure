@@ -1,4 +1,5 @@
 lib-cov
+.serverless
 *.seed
 *.log
 *.csv
