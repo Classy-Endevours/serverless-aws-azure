@@ -35,6 +35,15 @@ functions:
       - http: 
           path: token
           method: get
+  getAnotherToken:
+    handler: 
+      - api/auth.getAnotherToken
+    memorySize: 128
+    description: get getAnotherToken from api key
+    events:
+      - http: 
+          path: token/another
+          method: get
 
 # plugins
 plugins:
