@@ -15,8 +15,8 @@ class Response {
       message: 'Internal Server Error'
     } } = error;
     return {
-      statusCode: data?.code || 500,
-      body: JSON.stringify(error.data)
+      statusCode: error?.data?.code || 500,
+      body: JSON.stringify(data)
     }
   }
 

@@ -1,6 +1,6 @@
 service: serverless-node-aws-azure
 frameworkVersion: '2'
-
+useDotenv: true
 # providers
 provider:
   name: aws
@@ -8,42 +8,30 @@ provider:
   lambdaHashingVersion: 20201221
   stage: dev
   region: us-east-1
-  # environment: 
-  #   APP_KEY: ${file(./config.yml):${self:custom.stage}.APP_KEY}
-  #   APP_SECRET: ${file(./config.yml):${self:custom.stage}.APP_SECRET}
-  #   DB_PREFIX: ${file(./config.yml):${self:custom.stage}.DB_PREFIX}
-  #   CANDIDATE_TABLE: ${self:service}-${opt:stage, self:provider.stage}
-  #   CANDIDATE_EMAIL_TABLE: "candidate-email-${opt:stage, self:provider.stage}"
-
-  # iamRoleStatements:
-  #   - Effect: Allow
-  #     Action:
-  #       - dynamodb:Query
-  #       - dynamodb:Scan
-  #       - dynamodb:GetItem
-  #       - dynamodb:PutItem
-  #     Resource: "*"
-
+ 
 # functions 
 functions:
-  getToken:
-    handler: 
-      - api/auth.getToken
+  findRecord:
+    handler:
+      - api/auth.auth0 
+      - api/report.find
     memorySize: 128
-    description: get token from api key
+    description: get all report
     events:
       - http: 
-          path: token
+          path: report
           method: get
-  getAnotherToken:
+  saveRecord:
     handler: 
-      - api/auth.getAnotherToken
+      - api/report.save
     memorySize: 128
     description: get getAnotherToken from api key
     events:
       - http: 
-          path: token/another
-          method: get
+          path: report
+          method: post
+  auth0Authorization:
+    handler: api/auth.auth0
 
 # plugins
 plugins:
@@ -56,6 +44,30 @@ plugins:
 custom:
   stage: ${opt:stage, self:provider.stage}
 
+# resources
+resources:
+  Resources:
+    # This response is needed for custom authorizer failures cors support ¯\_(ツ)_/¯
+    GatewayResponse:
+      Type: 'AWS::ApiGateway::GatewayResponse'
+      Properties:
+        ResponseParameters:
+          gatewayresponse.header.Access-Control-Allow-Origin: "'*'"
+          gatewayresponse.header.Access-Control-Allow-Headers: "'*'"
+        ResponseType: EXPIRED_TOKEN
+        RestApiId:
+          Ref: 'ApiGatewayRestApi'
+        StatusCode: '401'
+    AuthFailureGatewayResponse:
+      Type: 'AWS::ApiGateway::GatewayResponse'
+      Properties:
+        ResponseParameters:
+          gatewayresponse.header.Access-Control-Allow-Origin: "'*'"
+          gatewayresponse.header.Access-Control-Allow-Headers: "'*'"
+        ResponseType: UNAUTHORIZED
+        RestApiId:
+          Ref: 'ApiGatewayRestApi'
+        StatusCode: '401'
 
 # package
 package:
