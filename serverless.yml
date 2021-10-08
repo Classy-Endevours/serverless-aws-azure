@@ -24,7 +24,7 @@ functions:
     description: get all report
     events:
       - http: 
-          path: report
+          path: reports
           method: get
   saveRecord:
     handler: 
@@ -33,7 +33,7 @@ functions:
     description: get getAnotherToken from api key
     events:
       - http: 
-          path: report
+          path: reports
           method: post
   auth0Authorization:
     handler: api/auth.auth0

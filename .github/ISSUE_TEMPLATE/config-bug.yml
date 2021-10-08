@@ -1,0 +1,49 @@
+name: Config Issue Report
+description: File a issue report
+title: '[Issue]: '
+labels: [improvement]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for taking the time to fill out this issue report!
+  - type: textarea
+    id: repro
+    attributes:
+      label: Reproduction steps
+      description: 'How do you trigger this issue? Please walk us through it step by step.'
+      value: |
+        1.
+        2.
+        3.
+        ...
+      render: bash
+    validations:
+      required: true
+  - type: input
+    id: oneline
+    attributes:
+      label: Which part of project it will effect
+      description: Which area in project will get affected by the issue, can be functional or operational
+      placeholder: ex. security, business
+    validations:
+      required: false
+  - type: input
+    id: version
+    attributes:
+      label: What is the version of the desktop/mobile
+      description: Tell us the version for your desktop/mobile
+      placeholder: ex. desktop/mobile
+    validations:
+      required: false
+  - type: textarea
+    id: logs
+    attributes:
+      label: Relevant log output
+      description: Please copy and paste any relevant log output. This will be automatically formatted into code, so no need for backticks.
+      render: shell
+  - type: textarea
+    id: context
+    attributes:
+      label: Other context
+      description: please describe other context for the issue
