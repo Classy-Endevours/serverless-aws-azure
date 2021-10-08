@@ -23,7 +23,10 @@ jobs:
       uses: actions/setup-node@v1
       with:
         node-version: ${{ matrix.node-version }}
-    - run: yarn install --frozen-lockfile
+    - name: Install Dependencies
+      run: yarn install --frozen-lockfile
+    - name: Test coverage
+      run: yarn test
     - name: serverless deploy
       uses: serverless/github-action@master
       with:

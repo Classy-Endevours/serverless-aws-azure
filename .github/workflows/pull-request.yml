@@ -2,7 +2,7 @@ name: Pull request checker
 
 on:
   pull_request:
-    branches: main
+    branches: [main, dev]
 
 jobs:
   deploy:
@@ -19,5 +19,5 @@ jobs:
         node-version: ${{ matrix.node-version }}
     - name: Install Dependencies
       run: yarn install --frozen-lockfile
-    - name: Backend test coverage
+    - name: Test coverage
       run: yarn test
