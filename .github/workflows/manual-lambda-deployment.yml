@@ -1,4 +1,4 @@
-name: Manually deploy lambda functions
+name: Manually deploy lambda function
 
 on:
   workflow_dispatch:
