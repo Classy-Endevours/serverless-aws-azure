@@ -6,6 +6,7 @@
   "scripts": {
     "start": "ts-node index.ts",
     "dev": "nodemon --exec \"serverless offline start\"",
+    "test": "cross-env NODE_ENV=test jest",
     "tsc": "tsc"
   },
   "keywords": [],
@@ -23,9 +24,14 @@
   },
   "devDependencies": {
     "@types/express": "^4.17.13",
+    "@types/jest": "^27.0.2",
     "@types/node": "^16.10.1",
+    "cross-env": "^7.0.3",
+    "jest": "^27.2.5",
+    "nodemon": "^2.0.13",
     "serverless-offline": "^8.2.0",
     "serverless-plugin-typescript": "^2.1.0",
+    "ts-jest": "^27.0.5",
     "ts-node": "^10.2.1"
   }
 }

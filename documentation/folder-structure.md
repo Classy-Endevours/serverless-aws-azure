@@ -9,6 +9,7 @@ Here you can find the small level overview of each folders
 - `lib/` - All the common wrapper methods 
 - `logger/`- Environment based logger to log `warn`, `error` or `info`
 - `util/` - All the common wrapper methods. Similar to `lib` but on much shorter methods
+- `tests/` - All test-cases will be part of this folder
 - `README.md`
 - `package.json`
 - `index.ts` - might be useful when migrating to Azure
