@@ -16,21 +16,29 @@ provider:
  
 # functions 
 functions:
-  findRecord:
+  findRecords:
     handler:
-      - api/auth.auth0 
       - api/report.find
     memorySize: 128
-    description: get all report
+    description: get all reports
     events:
       - http: 
           path: reports
+          method: get
+  findRecord:
+    handler:
+      - api/report.find
+    memorySize: 128
+    description: get particlular report
+    events:
+      - http: 
+          path: reports/{id}
           method: get
   saveRecord:
     handler: 
       - api/report.save
     memorySize: 128
-    description: get getAnotherToken from api key
+    description: Save Report in the database
     events:
       - http: 
           path: reports
