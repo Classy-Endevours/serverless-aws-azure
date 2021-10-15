@@ -30,7 +30,7 @@ export const find = async (event, context) => {
   } catch (error) {
     context.end();
     return response.create(500, {
-      err: error.message,
+      err: error,
     });
   }
 };
@@ -82,7 +82,7 @@ export const save = async (event, context) => {
     console.log({ error });
 
     return response.create(500, {
-      err: error.message,
+      err: error,
     });
   }
 };

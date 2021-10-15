@@ -16,7 +16,7 @@ class Response {
     } } = error;
     return {
       statusCode: error.data?.code || 500,
-      body: JSON.stringify(data)
+      body: JSON.stringify(error)
     }
   }
 
