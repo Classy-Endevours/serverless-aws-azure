@@ -28,7 +28,7 @@ export const find = async (event, context) => {
       data,
     });
   } catch (error) {
-    context.end();
+    // context.end();
     return response.create(500, {
       err: error,
     });
