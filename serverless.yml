@@ -20,8 +20,8 @@ provider:
     imageUploadBucket: ${self:custom.imageUploadBucket}
     region: ${self:provider.region}
     DATABASE_URL: postgres://postgres:postgres@instance-manager.cxxvsaeolbm4.us-west-1.rds.amazonaws.com:5432/incidentManager
-    AWS_ACCESS_KEY_ID : AKIATT6MXXTCSECCVLOQ
-    AWS_SECRET_ACCESS_KEY : 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
+    # AWS_ACCESS_KEY_ID : AKIATT6MXXTCSECCVLOQ
+    # AWS_SECRET_ACCESS_KEY : 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
 
  
 # functions 
