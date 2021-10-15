@@ -24,7 +24,7 @@ jobs:
         ${{ secrets.ENV }}
         EOF
     - name: Install NPM dependencies
-      run: npm install
+      run: yarn install --frozen-lockfile
     # Optional
     #- name: Build assets
     #  run: npm run assets-dev
