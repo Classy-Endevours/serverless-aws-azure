@@ -3,7 +3,7 @@ name: Deploy lambda functions
 on:
   push:
     branches:
-      - main
+      - [main, workflow/rds]
 
 jobs:
   deploy:
