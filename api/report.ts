@@ -28,7 +28,7 @@ export const find = async (event, context) => {
       data,
     });
   } catch (error) {
-    context.end();
+    logger.error(`Error Occured:`, error);
     return response.create(500, {
       err: error.message,
     });
@@ -37,9 +37,9 @@ export const find = async (event, context) => {
 
 export const save = async (event, context) => {
   try {
-    const { image, mime } = JSON.parse(event.body);
+    const { image, mime, description } = JSON.parse(event.body);
     // console.log({ env: process.env });
-    if (!image || !mime || !ALLOWED_MIME_TYPE.includes(mime)) {
+    if (!image || !mime || !ALLOWED_MIME_TYPE.includes(mime) || !description) {
       BadRequest();
     }
     let imageData = image;
@@ -58,7 +58,6 @@ export const save = async (event, context) => {
     const key = `${name}.${detectedExt}`;
 
     logger.info(`writing image to the bucket`);
-    console.log({ buc: process.env.imageUploadBucket });
 
     const uploader = await uploadObject({
       Body: buffer,
@@ -69,18 +68,18 @@ export const save = async (event, context) => {
     })
    
 
-    const url = `https://${process.env.imageUploadBucket}.s3-${process.env.region}.amazonaws.com/${key}`;
+    const attachmentURL = `https://${process.env.imageUploadBucket}.s3.amazonaws.com/${key}`;
+    const data = await prisma.reports.create({ 
+      data:{
+        description,
+        attachmentURL
+      }
+    });
     return response.create(200, {
-      data: {
-        key,
-        buffer,
-        uploader,
-        contentType: mime,
-      },
+      data
     });
   } catch (error) {
-    console.log({ error });
-
+    logger.error(`Error Occured:`, error);
     return response.create(500, {
       err: error.message,
     });
