@@ -39,20 +39,11 @@ functions:
     handler:
       - api/report.find
     memorySize: 128
-    description: get particlular report
+    description: get particular report
     events:
       - http: 
           path: reports/{id}
           method: get
-  saveRecord:
-    handler: 
-      - api/report.save
-    memorySize: 128
-    description: Save Report in the database
-    events:
-      - http: 
-          path: reports
-          method: post
   auth0Authorization:
     handler: api/auth.auth0
 
