@@ -59,6 +59,7 @@ plugins:
   - serverless-offline
   - serverless-middleware
   - serverless-plugin-typescript
+  - serverless-dotenv-plugin
 
 
 # custom object
