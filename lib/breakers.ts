@@ -42,6 +42,13 @@ export const ValidationFailed = () => {
     })
 }
 
+export const BadRequest = (msg?: string) => {
+    throw new CustomError('Bad Request', {
+        message: msg || 'Please check your data!',
+        code: 400
+    })
+}
+
 export const OnlyJSONValid = () => {
     throw new CustomError('Validation Failed', {
         message: 'Please check you data and content type to JSON!',
