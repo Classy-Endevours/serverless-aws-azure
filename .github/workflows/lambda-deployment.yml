@@ -29,6 +29,8 @@ jobs:
         EOF
     - name: Install NPM dependencies
       run: yarn install --frozen-lockfile && SLS_DEBUG=*
+    - name: Install NPM dependencies
+      run: yarn gen
     # Optional
     #- name: Build assets
     #  run: npm run assets-dev

@@ -8,6 +8,7 @@
     "dev": "nodemon --exec \"serverless offline start\"",
     "coverage": "cross-env NODE_ENV=test jest --coverage --watchAll=false",
     "test": "cross-env NODE_ENV=test jest",
+    "gen":"prisma generate",
     "tsc": "tsc"
   },
   "keywords": [],
