@@ -8,10 +8,17 @@ provider:
   lambdaHashingVersion: 20201221
   stage: dev
   region: us-east-1
+  iamRoleStatements:
+    Effect: Allow
+    Action:
+      - s3:*
+    Resource: '*'
   environment: 
     JWKS_URI: https://dev-6v3npaji.us.auth0.com/.well-known/jwks.json
     TOKEN_ISSUER: https://dev-6v3npaji.us.auth0.com/
     AUDIENCE: https://dev-6v3npaji.us.auth0.com/api/v2/
+    imageUploadBucket: ${self:custom.imageUploadBucket}
+    region: ${self:provider.region}
 
  
 # functions 
@@ -57,11 +64,17 @@ plugins:
 # custom object
 custom:
   stage: ${opt:stage, self:provider.stage}
+  imageUploadBucket: incident-manager
 
 # resources
 resources:
   Resources:
     # This response is needed for custom authorizer failures cors support ¯\_(ツ)_/¯
+    ImageUploadBucket:
+      Type: AWS::S3::Bucket
+      Properties:
+        BucketName: ${self:custom.imageUploadBucket}
+        AccessControl: PublicRead
     GatewayResponse:
       Type: 'AWS::ApiGateway::GatewayResponse'
       Properties:
