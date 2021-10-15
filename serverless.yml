@@ -19,13 +19,13 @@ provider:
     AUDIENCE: https://dev-6v3npaji.us.auth0.com/api/v2/
     imageUploadBucket: ${self:custom.imageUploadBucket}
     region: ${self:provider.region}
+    DATABASE_URL: postgres://postgres:postgres@instance-manager.cxxvsaeolbm4.us-west-1.rds.amazonaws.com:5432/incidentManager
 
  
 # functions 
 functions:
   findRecords:
     handler:
-      - api/auth.auth0
       - api/report.find
     memorySize: 128
     description: get all reports
@@ -59,7 +59,6 @@ plugins:
   - serverless-offline
   - serverless-middleware
   - serverless-plugin-typescript
-  - serverless-dotenv-plugin
 
 
 # custom object
