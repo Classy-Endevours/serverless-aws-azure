@@ -3,7 +3,8 @@ name: Deploy lambda functions
 on:
   push:
     branches:
-      - [main, test]
+      - main
+      - test
 
 jobs:
   deploy:
