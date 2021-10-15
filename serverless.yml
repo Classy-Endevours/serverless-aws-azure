@@ -72,11 +72,11 @@ custom:
 resources:
   Resources:
     # This response is needed for custom authorizer failures cors support ¯\_(ツ)_/¯
-    ImageUploadBucket:
-      Type: AWS::S3::Bucket
-      Properties:
-        BucketName: ${self:custom.imageUploadBucket}
-        AccessControl: PublicRead
+    # ImageUploadBucket:
+    #   Type: AWS::S3::Bucket
+    #   Properties:
+    #     BucketName: ${self:custom.imageUploadBucket}
+    #     AccessControl: PublicRead
     GatewayResponse:
       Type: 'AWS::ApiGateway::GatewayResponse'
       Properties:
