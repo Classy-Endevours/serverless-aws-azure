@@ -1,4 +1,4 @@
-import winston from "winston";
+import winston = require("winston");
 const { format, createLogger, transports } = winston;
 const { timestamp, combine, printf, errors } = format;
 

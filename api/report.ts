@@ -1,13 +1,16 @@
 import response from "../util/response";
 import { PrismaClient } from '@prisma/client'
 
+interface condition {
+  id?: number
+}
+
 const prisma = new PrismaClient()
 
-export const find = async (event, contex) => {
+export const find = async (event, context) => {
   try {
         // const id 
-        console.log({event});
-        const where ={}
+        const where: condition ={}
         if(event?.pathParameters?.id) {
           where.id = parseInt(event.pathParameters.id)
         }
@@ -16,6 +19,7 @@ export const find = async (event, contex) => {
           data,
         });
       } catch (error) {
+        context.end()
         return response.create(500, {
           err: error.message,
         });

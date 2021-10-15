@@ -1,10 +1,14 @@
 import CustomError from "../util/customError"
 
-export const UnAuthorized = () => {
-    throw new CustomError('UnAuthorized', {
+export const createUnAuthorizedError = () => {
+    return new CustomError('UnAuthorized', {
         code: 401,
         message: 'You are authorized to access the resource!',
     })
+}
+
+export const UnAuthorized = () => {
+    throw createUnAuthorizedError()
 }
 export const TokenExpired = () => {
     throw new CustomError('UnAuthorized', {
