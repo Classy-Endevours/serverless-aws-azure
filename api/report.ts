@@ -21,7 +21,7 @@ export const save = async (event) => {
       BadRequest();
     }
 
-    const data = ReportSvc.saveRecord(
+    const data = await ReportSvc.saveRecord(
       {
         description,
       },

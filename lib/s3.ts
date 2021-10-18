@@ -6,15 +6,20 @@ AWS.config.update({
 });
 const s3 = new AWS.S3();
 
-export const uploadObject = (body) => {
+export const uploadObject = async (body) => {
   return new Promise((resolve, reject) => {
-    console.log("process start: ", body, process.env.AWS_ACCESS_KEY_ID)
-    s3.putObject(body, function (err, data) {
-      if (err) {
-        console.log('Some error occurred: ', err)
-        reject(err);
-      }
-      resolve(data);
-    });
+    try {
+      console.log("process start: ", body, process.env.AWS_ACCESS_KEY_ID);
+      s3.upload(body, function (err, data) {
+        if (err) {
+          console.log("Some error occurred: ", err);
+          reject(err);
+        }
+        resolve(data);
+      });
+    } catch (error) {
+      console.log("Error.uploadObject.catch: ", error);
+      reject(error);
+    }
   });
 };

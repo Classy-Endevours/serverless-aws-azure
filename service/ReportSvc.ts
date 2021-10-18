@@ -23,33 +23,39 @@ class ReportSvc {
     input: createReportDto,
     fileInput: fileInputDto
   ) => {
-    const { image, mime } = fileInput;
-    let imageData = image;
-    if (image.substr(0, 7) === "base64,") {
-      imageData = image.substr(7, image.length);
-    }
-    const buffer = Buffer.from(imageData, "base64");
-    const fileInfo = await fileType.fromBuffer(buffer);
-    const detectedExt = fileInfo?.ext;
-    const detectedMime = fileInfo?.mime;
+    return new Promise(async (resolve, reject) => {
+      try {
+        const { image, mime } = fileInput;
+        let imageData = image;
+        if (image.substr(0, 7) === "base64,") {
+          imageData = image.substr(7, image.length);
+        }
+        const buffer = Buffer.from(imageData, "base64");
+        const fileInfo = await fileType.fromBuffer(buffer);
+        const detectedExt = fileInfo?.ext;
+        const detectedMime = fileInfo?.mime;
 
-    if (detectedMime !== mime) {
-      BadRequest("Bad mime type!");
-    }
-    const name = uuid();
-    const key = `${name}.${detectedExt}`;
+        if (detectedMime !== mime) {
+          BadRequest("Bad mime type!");
+        }
+        const name = uuid();
+        const key = `${name}.${detectedExt}`;
 
-    logger.info(`writing image to the bucket`);
-    console.log({ buc: process.env.imageUploadBucket });
+        logger.info(`writing image to the bucket`);
+        console.log({ buc: process.env.imageUploadBucket });
 
-    const uploader = await uploadObject({
-      Body: buffer,
-      Key: key,
-      ContentType: mime,
-      Bucket: process.env.imageUploadBucket || "",
-      ACL: "public-read",
+        const uploader = await uploadObject({
+          Body: buffer,
+          Key: key,
+          ContentType: mime,
+          Bucket: process.env.imageUploadBucket || "",
+          ACL: "public-read",
+        });
+        resolve(uploader);
+      } catch (error) {
+        reject(error);
+      }
     });
-    return uploader;
   };
 }
 
