@@ -8,7 +8,7 @@ const s3 = new AWS.S3();
 
 export const uploadObject = async (body) => {
   return new Promise((resolve, reject) => {
-    try {
+    try {  
       console.log("process start: ", body, process.env.AWS_ACCESS_KEY_ID);
       s3.upload(body, function (err, data) {
         if (err) {
