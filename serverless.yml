@@ -15,8 +15,8 @@ provider:
     imageUploadBucket: ${self:custom.imageUploadBucket}
     region: ${self:provider.region}
     DATABASE_URL: ${self:custom.environment.DATABASE_URL}
-    AWS_ACCESS_KEY_ID: ${self:custom.environment.AWS_ACCESS_KEY_ID}
-    AWS_SECRET_ACCESS_KEY: ${self:custom.environment.AWS_SECRET_ACCESS_KEY}
+    # AWS_ACCESS_KEY_ID: ${self:custom.environment.AWS_ACCESS_KEY_ID}
+    # AWS_SECRET_ACCESS_KEY: ${self:custom.environment.AWS_SECRET_ACCESS_KEY}
   iam:
     role:
       statements:
