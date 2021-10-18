@@ -9,7 +9,7 @@ import { uploadObject } from "../lib/s3";
 
 class ReportSvc {
   static getRecords = async (id?: string) => {
-    const where: whereInterface = {};
+    const where: whereInterface = {}; 
     if (id) {
       where.id = parseInt(id);
     }
