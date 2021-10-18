@@ -22,7 +22,7 @@ provider:
     Action:
       - "s3:*"
     Resource:
-      - "arn:aws:s3:::incident-manager/*"
+      - "arn:aws:s3:::${self:custom.environment.S3_BUCKET_NAME}/*"
 # functions 
 functions:
   findRecords:

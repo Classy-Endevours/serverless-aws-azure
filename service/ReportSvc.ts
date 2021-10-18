@@ -42,13 +42,13 @@ class ReportSvc {
         const key = `${name}.${detectedExt}`;
 
         logger.info(`writing image to the bucket`);
-        console.log({ buc: process.env.imageUploadBucket });
+        logger.info({ buc: process.env.imageUploadBucket });
 
         const uploader = await uploadObject({
           Body: buffer,
           Key: key,
           ContentType: mime,
-          Bucket: 'incident-manager' || "",
+          Bucket: process.env.imageUploadBucket,
           ACL: "public-read",
         });
         resolve(uploader);
