@@ -1,4 +1,4 @@
-service: serverless-node-azure-aws
+service: node-azure-aws-serverless
 frameworkVersion: '2'
 useDotenv: true
 # providers
