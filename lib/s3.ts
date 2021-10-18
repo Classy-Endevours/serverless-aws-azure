@@ -6,10 +6,9 @@ import * as AWS from "aws-sdk";
 // });
 const s3 = new AWS.S3();
 
-export const uploadObject = async (body) => {
+export const S3UploadObject = async (body) => {
   return new Promise((resolve, reject) => {
-    try {  
-      console.log("process start: ", body, process.env.AWS_ACCESS_KEY_ID);
+    try {
       s3.putObject(body, function (err, data) {
         if (err) {
           console.log("Some error occurred: ", err);

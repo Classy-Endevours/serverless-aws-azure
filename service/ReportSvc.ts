@@ -5,11 +5,11 @@ import { createReportDto, fileInputDto } from "../interfaces/service";
 import { BadRequest } from "../lib/breakers";
 import reportRepo from "../repo/ReportRepo";
 import logger from "../logger";
-import { uploadObject } from "../lib/s3";
+import { uploadObject } from "../lib/uploadObject";
 
 class ReportSvc {
   static getRecords = async (id?: string) => {
-    const where: whereInterface = {}; 
+    const where: whereInterface = {};
     if (id) {
       where.id = parseInt(id);
     }
@@ -25,33 +25,14 @@ class ReportSvc {
   ) => {
     return new Promise(async (resolve, reject) => {
       try {
-        const { image, mime } = fileInput;
-        let imageData = image;
-        if (image.substr(0, 7) === "base64,") {
-          imageData = image.substr(7, image.length);
+        const { description } = input;
+        const attachmentURL: any = await uploadObject(fileInput)
+        const record = {
+          description,
+          attachmentURL
         }
-        const buffer = Buffer.from(imageData, "base64");
-        const fileInfo = await fileType.fromBuffer(buffer);
-        const detectedExt = fileInfo?.ext;
-        const detectedMime = fileInfo?.mime;
-
-        if (detectedMime !== mime) {
-          BadRequest("Bad mime type!");
-        }
-        const name = uuid();
-        const key = `${name}.${detectedExt}`;
-
-        logger.info(`writing image to the bucket`);
-        logger.info({ buc: process.env.imageUploadBucket });
-
-        const uploader = await uploadObject({
-          Body: buffer,
-          Key: key,
-          ContentType: mime,
-          Bucket: process.env.imageUploadBucket,
-          ACL: "public-read",
-        });
-        resolve(uploader);
+        const data = await reportRepo.create(record);
+        resolve(data);
       } catch (error) {
         reject(error);
       }
