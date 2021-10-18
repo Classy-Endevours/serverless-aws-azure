@@ -12,32 +12,17 @@ provider:
     JWKS_URI: ${self:custom.environment.JWKS_URI}
     TOKEN_ISSUER: ${self:custom.environment.TOKEN_ISSUER}
     AUDIENCE: ${self:custom.environment.AUDIENCE}
-    imageUploadBucket: ${self:custom.imageUploadBucket}
+    imageUploadBucket: ${self:custom.environment.S3_BUCKET_NAME}
     region: ${self:provider.region}
     DATABASE_URL: ${self:custom.environment.DATABASE_URL}
     # AWS_ACCESS_KEY_ID: ${self:custom.environment.AWS_ACCESS_KEY_ID}
     # AWS_SECRET_ACCESS_KEY: ${self:custom.environment.AWS_SECRET_ACCESS_KEY}
-  iam:
-    role:
-      statements:
-        - Effect: 'Allow'
-          Action:
-            - 's3:ListBucket'
-          Resource:
-            Fn::Join:
-              - ''
-              - - 'arn:aws:s3:::'
-                - Ref: ServerlessDeploymentBucket
-        - Effect: 'Allow'
-          Action:
-            - 's3:PutObject'
-          Resource:
-            Fn::Join:
-              - ''
-              - - 'arn:aws:s3:::'
-                - Ref: ServerlessDeploymentBucket
-                - '/*'
- 
+    iamRoleStatements:
+    - Effect: "Allow"
+      Action:
+        - "s3:PutObject"
+      Resource:
+        - "arn:aws:s3:::${self:custom.environment.S3_BUCKET_NAME}/*"
 # functions 
 functions:
   findRecords:
@@ -81,7 +66,7 @@ plugins:
 custom:
   defaultStage: dev
   environment: ${file(env.yml):${self:provider.stage}, file(env.yml):dev}
-  imageUploadBucket: incident-manager
+  # imageUploadBucket: serverless-node-aws-azur-serverlessdeploymentbuck-qtqy108vlk1h
 
 # resources
 resources:
