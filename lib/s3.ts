@@ -10,6 +10,7 @@ export const uploadObject = (body) => {
   return new Promise((resolve, reject) => {
     s3.putObject(body, function (err, data) {
       if (err) {
+        console.log('Some error occurred: ', err)
         reject(err);
       }
       resolve(data);

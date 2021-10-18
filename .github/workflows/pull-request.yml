@@ -5,8 +5,8 @@ on:
     branches: [main, dev]
 
 jobs:
-  deploy:
-    name: deploy
+  checker:
+    name: checker
     runs-on: ubuntu-latest
     strategy:
       matrix:
