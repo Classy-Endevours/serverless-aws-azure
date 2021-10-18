@@ -1,4 +1,4 @@
-service: serverless-node-aws-azure
+service: serverless-node-azure-aws
 frameworkVersion: '2'
 useDotenv: true
 # providers
@@ -8,32 +8,50 @@ provider:
   lambdaHashingVersion: 20201221
   stage: dev
   region: us-east-1
+  # iamRoleStatements:
+  #   Effect: Allow
+  #   Action:
+  #     - s3:*
+  #   Resource: '*'
   environment: 
     JWKS_URI: https://dev-6v3npaji.us.auth0.com/.well-known/jwks.json
     TOKEN_ISSUER: https://dev-6v3npaji.us.auth0.com/
     AUDIENCE: https://dev-6v3npaji.us.auth0.com/api/v2/
+    imageUploadBucket: ${self:custom.imageUploadBucket}
+    region: ${self:provider.region}
+    DATABASE_URL: postgres://postgres:postgres@instance-manager.cxxvsaeolbm4.us-west-1.rds.amazonaws.com:5432/incidentManager
+    # AWS_ACCESS_KEY_ID : AKIATT6MXXTCSECCVLOQ
+    # AWS_SECRET_ACCESS_KEY : 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
 
  
 # functions 
 functions:
-  findRecord:
+  findRecords:
     handler:
-      - api/auth.auth0 
       - api/report.find
     memorySize: 128
-    description: get all report
+    description: get all reports
     events:
       - http: 
-          path: report
+          path: reports
+          method: get
+  findRecord:
+    handler:
+      - api/report.find
+    memorySize: 128
+    description: get particlular report
+    events:
+      - http: 
+          path: reports/{id}
           method: get
   saveRecord:
     handler: 
       - api/report.save
     memorySize: 128
-    description: get getAnotherToken from api key
+    description: Save Report in the database
     events:
       - http: 
-          path: report
+          path: reports
           method: post
   auth0Authorization:
     handler: api/auth.auth0
@@ -48,11 +66,17 @@ plugins:
 # custom object
 custom:
   stage: ${opt:stage, self:provider.stage}
+  imageUploadBucket: incident-manager
 
 # resources
 resources:
   Resources:
     # This response is needed for custom authorizer failures cors support ¯\_(ツ)_/¯
+    # ImageUploadBucket:
+    #   Type: AWS::S3::Bucket
+    #   Properties:
+    #     BucketName: ${self:custom.imageUploadBucket}
+    #     AccessControl: PublicRead
     GatewayResponse:
       Type: 'AWS::ApiGateway::GatewayResponse'
       Properties:

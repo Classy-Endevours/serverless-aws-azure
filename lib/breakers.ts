@@ -1,10 +1,14 @@
 import CustomError from "../util/customError"
 
-export const UnAuthorized = () => {
-    throw new CustomError('UnAuthorized', {
+export const createUnAuthorizedError = () => {
+    return new CustomError('UnAuthorized', {
         code: 401,
         message: 'You are authorized to access the resource!',
     })
+}
+
+export const UnAuthorized = () => {
+    throw createUnAuthorizedError()
 }
 export const TokenExpired = () => {
     throw new CustomError('UnAuthorized', {
@@ -37,7 +41,12 @@ export const ValidationFailed = () => {
         code: 403
     })
 }
-
+export const BadRequest = (msg?: string) => {
+    throw new CustomError('Bad Request', {
+        message: msg || 'Please check your data!',
+        code: 400
+    })
+}
 export const OnlyJSONValid = () => {
     throw new CustomError('Validation Failed', {
         message: 'Please check you data and content type to JSON!',

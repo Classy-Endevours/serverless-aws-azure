@@ -14,9 +14,11 @@ class Response {
     const { data = {
       message: 'Internal Server Error'
     } } = error;
+    console.log({error});
+    
     return {
-      statusCode: error?.data?.code || 500,
-      body: JSON.stringify(data)
+      statusCode: error.data?.code || 500,
+      body: JSON.stringify(error)
     }
   }
 

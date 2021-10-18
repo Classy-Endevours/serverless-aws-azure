@@ -1,5 +1,5 @@
-import dotenv from "dotenv";
-import winston from "winston";
+import dotenv = require("dotenv");
+import winston = require("winston");
 dotenv.config();
 
 import buildDevLogger from "./dev.logger";
