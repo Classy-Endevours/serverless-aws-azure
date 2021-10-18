@@ -48,7 +48,7 @@ class ReportSvc {
           Body: buffer,
           Key: key,
           ContentType: mime,
-          Bucket: process.env.imageUploadBucket || "",
+          Bucket: 'incident-manager' || "",
           ACL: "public-read",
         });
         resolve(uploader);
