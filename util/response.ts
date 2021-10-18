@@ -12,13 +12,13 @@ class Response {
   
    failed = (error:any) => {
     const { data = {
-      message: 'Internal Server Error'
+      message: error.message || 'Internal Server Error'
     } } = error;
     console.log({error});
     
     return {
       statusCode: error.data?.code || 500,
-      body: JSON.stringify(error)
+      body: JSON.stringify(data)
     }
   }
 
