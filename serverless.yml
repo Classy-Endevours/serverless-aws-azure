@@ -8,11 +8,6 @@ provider:
   lambdaHashingVersion: 20201221
   stage: ${opt:stage, self:custom.defaultStage}
   region: us-east-1
-  # iamRoleStatements:
-  #   Effect: Allow
-  #   Action:
-  #     - s3:*
-  #   Resource: '*'
   environment: 
     JWKS_URI: ${self:custom.environment.JWKS_URI}
     TOKEN_ISSUER: ${self:custom.environment.TOKEN_ISSUER}
@@ -22,7 +17,26 @@ provider:
     DATABASE_URL: ${self:custom.environment.DATABASE_URL}
     AWS_ACCESS_KEY_ID: ${self:custom.environment.AWS_ACCESS_KEY_ID}
     AWS_SECRET_ACCESS_KEY: ${self:custom.environment.AWS_SECRET_ACCESS_KEY}
-
+  iam:
+    role:
+      statements:
+        - Effect: 'Allow'
+          Action:
+            - 's3:ListBucket'
+          Resource:
+            Fn::Join:
+              - ''
+              - - 'arn:aws:s3:::'
+                - Ref: ServerlessDeploymentBucket
+        - Effect: 'Allow'
+          Action:
+            - 's3:PutObject'
+          Resource:
+            Fn::Join:
+              - ''
+              - - 'arn:aws:s3:::'
+                - Ref: ServerlessDeploymentBucket
+                - '/*'
  
 # functions 
 functions:
@@ -73,11 +87,11 @@ custom:
 resources:
   Resources:
     # This response is needed for custom authorizer failures cors support ¯\_(ツ)_/¯
-    # ImageUploadBucket:
-    #   Type: AWS::S3::Bucket
-    #   Properties:
-    #     BucketName: ${self:custom.imageUploadBucket}
-    #     AccessControl: PublicRead
+    ImageUploadBucket:
+      Type: AWS::S3::Bucket
+      Properties:
+        BucketName: ${self:custom.imageUploadBucket}
+        AccessControl: PublicRead
     GatewayResponse:
       Type: 'AWS::ApiGateway::GatewayResponse'
       Properties:
