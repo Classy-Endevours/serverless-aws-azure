@@ -6,7 +6,7 @@ provider:
   name: aws
   runtime: nodejs14.x
   lambdaHashingVersion: 20201221
-  stage: dev
+  stage: ${opt:stage, self:custom.defaultStage}
   region: us-east-1
   # iamRoleStatements:
   #   Effect: Allow
@@ -14,14 +14,14 @@ provider:
   #     - s3:*
   #   Resource: '*'
   environment: 
-    JWKS_URI: https://dev-6v3npaji.us.auth0.com/.well-known/jwks.json
-    TOKEN_ISSUER: https://dev-6v3npaji.us.auth0.com/
-    AUDIENCE: https://dev-6v3npaji.us.auth0.com/api/v2/
+    JWKS_URI: ${self:custom.environment.JWKS_URI}
+    TOKEN_ISSUER: ${self:custom.environment.TOKEN_ISSUER}
+    AUDIENCE: ${self:custom.environment.AUDIENCE}
     imageUploadBucket: ${self:custom.imageUploadBucket}
     region: ${self:provider.region}
-    DATABASE_URL: postgres://postgres:postgres@instance-manager.cxxvsaeolbm4.us-west-1.rds.amazonaws.com:5432/incidentManager
-    # AWS_ACCESS_KEY_ID : AKIATT6MXXTCSECCVLOQ
-    # AWS_SECRET_ACCESS_KEY : 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
+    DATABASE_URL: ${self:custom.environment.DATABASE_URL}
+    AWS_ACCESS_KEY_ID: ${self:custom.environment.AWS_ACCESS_KEY_ID}
+    AWS_SECRET_ACCESS_KEY: ${self:custom.environment.AWS_SECRET_ACCESS_KEY}
 
  
 # functions 
@@ -65,7 +65,8 @@ plugins:
 
 # custom object
 custom:
-  stage: ${opt:stage, self:provider.stage}
+  defaultStage: dev
+  environment: ${file(env.yml):${self:provider.stage}, file(env.yml):dev}
   imageUploadBucket: incident-manager
 
 # resources
