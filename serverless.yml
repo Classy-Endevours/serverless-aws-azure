@@ -19,10 +19,8 @@ provider:
     # AWS_SECRET_ACCESS_KEY: ${self:custom.environment.AWS_SECRET_ACCESS_KEY}
     iamRoleStatements:
     - Effect: "Allow"
-      Action:
-        - "s3:PutObject"
-      Resource:
-        - "arn:aws:s3:::${self:custom.environment.S3_BUCKET_NAME}/*"
+      Action: "s3:PutObject"
+      Resource: "arn:aws:s3:::${self:custom.environment.S3_BUCKET_NAME}/*"
 # functions 
 functions:
   findRecords:
