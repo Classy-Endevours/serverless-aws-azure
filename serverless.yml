@@ -27,6 +27,7 @@ provider:
 functions:
   findRecords:
     handler:
+      - api/auth.auth0
       - api/report.find
     memorySize: 128
     description: get all reports
@@ -36,6 +37,7 @@ functions:
           method: get
   findRecord:
     handler:
+      - api/auth.auth0
       - api/report.find
     memorySize: 128
     description: get particular report
