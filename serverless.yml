@@ -46,7 +46,8 @@ functions:
   saveRecord:
     handler: 
       - api/report.save
-    memorySize: 128
+    memorySize: 256
+    timeout: 80
     description: Save Report in the database
     events:
       - http: 
