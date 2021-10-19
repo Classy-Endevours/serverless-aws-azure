@@ -25,14 +25,21 @@ jobs:
         node-version: ${{ matrix.node-version }}
     - name: Install Dependencies
       run: yarn install --frozen-lockfile
+    - name: Install Serverless Framework
+      run: npm install -g serverless
+    - name: Serverless AWS authentication
+      run: serverless config credentials --provider aws --key ${{ secrets.AWS_ACCESS_KEY_ID }} --secret ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+    - name: Create env file
+      run: | # cp sample.env.yml env.yml
+        cat > env.yml << EOF
+        ${{ secrets.ENV }}
+        EOF
+    - name: Install NPM dependencies
+      run: yarn install --frozen-lockfile && SLS_DEBUG=*
     - name: Test coverage
       run: yarn test
-    - name: serverless deploy
-      uses: serverless/github-action@master
-      with:
-        args: deploy
-      env:
-        # SERVERLESS_ACCESS_KEY: ${{ secrets.SERVERLESS_ACCESS_KEY }}
-        # or if using AWS credentials directly
-        AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-        AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+    - name: Generate prisma 
+      run: yarn gen
+    - name: Deploy Lambda functions
+      run: serverless deploy -s dev
+    
