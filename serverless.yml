@@ -1,4 +1,4 @@
-service: serverless-node-aws-azure
+service: serverless-node-azure-aws
 frameworkVersion: '2'
 useDotenv: true
 # providers
@@ -6,34 +6,54 @@ provider:
   name: aws
   runtime: nodejs14.x
   lambdaHashingVersion: 20201221
-  stage: dev
+  stage: ${opt:stage, self:custom.defaultStage}
   region: us-east-1
   environment: 
-    JWKS_URI: https://dev-6v3npaji.us.auth0.com/.well-known/jwks.json
-    TOKEN_ISSUER: https://dev-6v3npaji.us.auth0.com/
-    AUDIENCE: https://dev-6v3npaji.us.auth0.com/api/v2/
-
- 
+    JWKS_URI: ${self:custom.environment.JWKS_URI}
+    TOKEN_ISSUER: ${self:custom.environment.TOKEN_ISSUER}
+    AUDIENCE: ${self:custom.environment.AUDIENCE}
+    imageUploadBucket: ${self:custom.environment.S3_BUCKET_NAME}
+    region: ${self:provider.region}
+    DATABASE_URL: ${self:custom.environment.DATABASE_URL}
+    # AWS_ACCESS_KEY_ID: ${self:custom.environment.AWS_ACCESS_KEY_ID}
+    # AWS_SECRET_ACCESS_KEY: ${self:custom.environment.AWS_SECRET_ACCESS_KEY}
+  iamRoleStatements:
+  - Effect: "Allow"
+    Action:
+      - "s3:*"
+    Resource:
+      - "arn:aws:s3:::${self:custom.environment.S3_BUCKET_NAME}/*"
 # functions 
 functions:
-  findRecord:
+  findRecords:
     handler:
-      - api/auth.auth0 
+      - api/auth.auth0
       - api/report.find
     memorySize: 128
-    description: get all report
+    description: get all reports
     events:
       - http: 
-          path: report
+          path: reports
+          method: get
+  findRecord:
+    handler:
+      - api/auth.auth0
+      - api/report.find
+    memorySize: 128
+    description: get particular report
+    events:
+      - http: 
+          path: reports/{id}
           method: get
   saveRecord:
     handler: 
       - api/report.save
-    memorySize: 128
-    description: get getAnotherToken from api key
+    memorySize: 256
+    timeout: 80
+    description: Save Report in the database
     events:
       - http: 
-          path: report
+          path: reports
           method: post
   auth0Authorization:
     handler: api/auth.auth0
@@ -47,12 +67,19 @@ plugins:
 
 # custom object
 custom:
-  stage: ${opt:stage, self:provider.stage}
+  defaultStage: dev
+  environment: ${file(env.yml):${self:provider.stage}, file(env.yml):dev}
+  imageUploadBucket: serverless-node-aws-azur-serverlessdeploymentbuck-qtqy108vlk1h
 
 # resources
 resources:
   Resources:
     # This response is needed for custom authorizer failures cors support ¯\_(ツ)_/¯
+    # ImageUploadBucket:
+    #   Type: AWS::S3::Bucket
+    #   Properties:
+    #     BucketName: ${self:custom.imageUploadBucket}
+    #     AccessControl: PublicRead
     GatewayResponse:
       Type: 'AWS::ApiGateway::GatewayResponse'
       Properties:

@@ -4,8 +4,9 @@
 - NodeJS
 - TypeScript
 - AWS Lambda
+- AWS RDS
+- AWS S#
 - Azure
-- Native Postgres Database
 - auth0
 - JWT
 
@@ -13,6 +14,10 @@
 - AUDIENCE - *your oAuth audience*
 - JWKS_URI - *your JWKS uri*
 - TOKEN_ISSUER - *your token issuer*
+- DATABASE_URL - *your database url*
+- S3_BUCKET_NAME - *your S3 bucket name*
+- AWS_ACCESS_KEY_ID : *your AWS access ID (only needed locally)*
+- AWS_SECRET_ACCESS_KEY : *your AWS access key (only needed locally)*
 
 ### Installation
 1. clone the repo

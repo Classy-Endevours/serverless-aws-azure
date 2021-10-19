@@ -13,6 +13,9 @@ Following are the technologies used to build this project. Few of them will get 
 - Native Postgres Database
 - auth0
 - JWT
+- Amazon S3
+- Prisma
+- PostgresQL
 
 ## Architecture
 This project is using a hexagonal architecture which will have database and network interfaces.

@@ -1,6 +1,7 @@
 
 lib-cov
 .middleware
+env.yml
 .serverless
 *.seed
 *.log

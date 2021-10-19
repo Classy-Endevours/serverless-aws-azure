@@ -1,22 +1,30 @@
-name: Deploy lambda functions
+name: Manually deploy lambda function dispatch
 
 on:
-  push:
-    branches:
-      - main
+  workflow_dispatch:
+    inputs:
+        environment:
+          description: 'Define env name'     
+          required: false
+          default: 'prod'
 
 jobs:
-  deploy-dev:
+  deploy:
+    name: deploy
     runs-on: ubuntu-latest
     strategy:
       matrix:
         node-version: [14.x]
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v1
+      with:
+        ref: ${{ github.ref }}
     - name: Use Node.js ${{ matrix.node-version }}
       uses: actions/setup-node@v1
       with:
         node-version: ${{ matrix.node-version }}
+    - name: Install Dependencies
+      run: yarn install --frozen-lockfile
     - name: Install Serverless Framework
       run: npm install -g serverless
     - name: Serverless AWS authentication
@@ -28,22 +36,10 @@ jobs:
         EOF
     - name: Install NPM dependencies
       run: yarn install --frozen-lockfile && SLS_DEBUG=*
+    - name: Test coverage
+      run: yarn test
     - name: Generate prisma 
       run: yarn gen
-    # Optional
-    #- name: Build assets
-    #  run: npm run assets-dev
     - name: Deploy Lambda functions
       run: serverless deploy -s dev
-    # - name: serverless deploy
-    #   uses: serverless/github-action@master
-    #   with:
-    #     args: deploy
-    #   env:
-    #     # SERVERLESS_ACCESS_KEY: ${{ secrets.SERVERLESS_ACCESS_KEY }}
-    #     # or if using AWS credentials directly
-    #     AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-    #     AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-    # Optional (to use with serverless-finch serverless plugin)
-    #- name: Deploy assets to S3
-    #  run: sls client deploy --no-delete-contents --no-confirm -s dev
+    
