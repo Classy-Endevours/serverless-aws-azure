@@ -5,7 +5,7 @@
 - TypeScript
 - AWS Lambda
 - AWS RDS
-- AWS S#
+- AWS S3
 - Azure
 - auth0
 - JWT
