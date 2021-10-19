@@ -38,7 +38,7 @@ functions:
     handler:
       - api/report.find
     memorySize: 128
-    description: get particlular report
+    description: get particular report
     events:
       - http: 
           path: reports/{id}

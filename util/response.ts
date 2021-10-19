@@ -1,3 +1,5 @@
+import logger from "../logger";
+
 class Response {
   create = (status: any, data: any) => {
     return {
@@ -16,11 +18,11 @@ class Response {
       },
     } = error;
 
-    console.log({ error });
+    logger.error({ error });
 
     return {
       statusCode: error.data?.code || 500,
-      body: JSON.stringify(error),
+      body: JSON.stringify(data),
     };
   };
 }
