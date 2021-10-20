@@ -38,12 +38,22 @@ functions:
   findRecord:
     handler:
       - api/auth.auth0
-      - api/report.find
+      - api/report.findOne
     memorySize: 128
     description: get particular report
     events:
       - http: 
           path: reports/{id}
+          method: get
+  findAttachment:
+    handler:
+      - api/auth.auth0
+      - api/report.findAttachment
+    memorySize: 128
+    description: get particular report
+    events:
+      - http: 
+          path: reports/{id}/attachment
           method: get
   saveRecord:
     handler: 
