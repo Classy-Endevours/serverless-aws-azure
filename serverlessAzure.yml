@@ -1,0 +1,48 @@
+service: serverless-node-azure-aws
+frameworkVersion: '2'
+# useDotenv: true
+
+provider:
+  name: azure
+  region: Central US
+  runtime: nodejs14
+  stage: ${opt:stage, self:custom.defaultStage}
+  environment: 
+    JWKS_URI: ${self:custom.environment.JWKS_URI}
+    TOKEN_ISSUER: ${self:custom.environment.TOKEN_ISSUER}
+    AUDIENCE: ${self:custom.environment.AUDIENCE}
+    imageUploadBucket: ${self:custom.environment.S3_BUCKET_NAME}
+    region: ${self:provider.region}
+    DATABASE_URL: ${self:custom.environment.DATABASE_URL}
+
+plugins:
+  - serverless-azure-functions
+  # - serverless-offline
+  - serverless-webpack
+  # - serverless-plugin-typescript
+
+# custom object
+custom:
+  defaultStage: dev
+  environment: ${file(env.yml):${self:provider.stage}, file(env.yml):dev}
+  imageUploadBucket: serverless-node-aws-azur-serverlessdeploymentbuck-qtqy108vlk1h
+
+
+functions:
+  findRecords:
+    handler: api/azure/report.find
+    memorySize: 128
+    description: get all reports
+    events:
+      - http: true
+        method: GET
+        authLevel : anonymous
+        name: req
+        methods:
+          - GET
+        route: ${opt:stage, self:custom.defaultStage}/reports
+
+# package
+package:
+  exclude:
+    - node_modules/serverless-offline/**
