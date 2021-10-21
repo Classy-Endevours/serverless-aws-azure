@@ -2,37 +2,42 @@ import response from "../../util/response";
 import { BadRequest } from "../../lib/breakers";
 import ReportSvc from "../../service/ReportSvc";
 import { ALLOWED_MIME_TYPE } from "../../constant/allowedInput";
+import { auth0 } from "./auth";
 
-export const find = async (context, req) => {
+export const find = async (context, event) => {
   try {
+    const authResponse = await auth0(context, event);
     const data = await ReportSvc.getRecords();
-    return context.res = {
-      // status: 200, /* Defaults to 200 */
-      body: data
-    };
-  
-    // if (req.query.name || (req.body?.name)) {
-    //   context.res = {
-    //     // status: 200, /* Defaults to 200 */
-    //     body: `Hello ${(req.query.name || req.body.name)}`
-    //   };
-    // } else {
-    //   context.res = {
-    //     status: 400,
-    //     body: 'Please pass a name on the query string or in the request body'
-    //   };
-    // }
+    context.res = response.createAzure(200, data);
   } catch (error) {
-    context.res = {
-      status: 400,
-      body: 'Please pass a name on the query string or in the request body'
-    };
+    context.res = response.failedAzure(error);
   }
 };
 
-export const save = async (event) => {
+export const findOne = async (context, event) => {
   try {
-    const { image, mime, description } = JSON.parse(event.body);
+    const authResponse = await auth0(context, event);
+    const data = await ReportSvc.getRecord(context?.bindingData?.id);
+    context.res = response.createAzure(200, data);
+  } catch (error) {
+    context.res = response.failedAzure(error);
+  }
+};
+
+export const findAttachment = async (context, event) => {
+  try {
+    const authResponse = await auth0(context, event);
+    const data = await ReportSvc.getAttachment(context?.bindingData?.id);
+    context.res = response.createAzure(200, data);
+  } catch (error) {
+    context.res = response.failedAzure(error);
+  }
+};
+
+export const save = async (context, event) => {
+  try {
+    // const authResponse = await auth0(context, event);
+    const { image, mime, description } = event.body;
     if (!description || !image || !mime || !ALLOWED_MIME_TYPE.includes(mime)) {
       BadRequest();
     }
@@ -48,11 +53,8 @@ export const save = async (event) => {
     );
 
     // const url = `https://${process.env.imageUploadBucket}.s3-${process.env.region}.amazonaws.com/${key}`;
-    return response.create(200, {
-      data,
-    });
+    context.res = response.createAzure(200, data);
   } catch (error) {
-    console.log({ error });
-    return response.failed(error);
+    context.res = response.failedAzure(error);
   }
 };
