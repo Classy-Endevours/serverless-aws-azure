@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "azure": "serverless deploy -c serverlessAzure.yml -g incident-manager",
+    "azure": "serverless deploy -c serverlessAzure.yml -g sls-cus-dev-serverless-node-azure-aws-rg",
     "start": "ts-node index.ts",
     "dev": "nodemon --exec \"serverless offline start\"",
     "dev:azure": "serverless offline -c serverlessAzure.yml",
@@ -37,6 +37,7 @@
     "@types/express": "^4.17.13",
     "@types/jest": "^27.0.2",
     "@types/node": "^16.10.5",
+    "copy-webpack-plugin": "^9.0.1",
     "cross-env": "^7.0.3",
     "fork-ts-checker-webpack-plugin": "^6.3.6",
     "jest": "^27.2.5",
