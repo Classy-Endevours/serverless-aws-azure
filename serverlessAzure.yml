@@ -14,6 +14,8 @@ provider:
     imageUploadBucket: ${self:custom.environment.S3_BUCKET_NAME}
     region: ${self:provider.region}
     DATABASE_URL: ${self:custom.environment.DATABASE_URL}
+    AZURE_CON_STRING : ${self:custom.environment.AZURE_CON_STRING}
+    BLOB_CONTAINER : ${self:custom.environment.BLOB_CONTAINER}
 
 plugins:
   - serverless-azure-functions

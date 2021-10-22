@@ -14,7 +14,8 @@ export const S3UploadObject = async (body) => {
           console.log("Some error occurred: ", err);
           reject(err);
         }
-        resolve(data);
+        const attachmentURL = `https://${process.env.imageUploadBucket}.s3.amazonaws.com/${body.key}`;
+        resolve(attachmentURL);
       });
     } catch (error) {
       console.log("Error.uploadObject.catch: ", error);

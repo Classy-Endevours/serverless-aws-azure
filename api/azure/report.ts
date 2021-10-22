@@ -37,9 +37,17 @@ export const findAttachment = async (context, event) => {
 export const save = async (context, event) => {
   try {
     // const authResponse = await auth0(context, event);
-    const { image, mime, description } = event.body;
-    if (!description || !image || !mime || !ALLOWED_MIME_TYPE.includes(mime)) {
+    const { image="", mime="", description } = event.body;
+    if (!description) {
       BadRequest();
+    }
+    let isAttachment = true
+    if (image || mime){
+      if(!ALLOWED_MIME_TYPE.includes(mime)) {
+        BadRequest();
+      }
+    } else {
+      isAttachment = false
     }
 
     const data = await ReportSvc.saveRecord(
@@ -49,7 +57,9 @@ export const save = async (context, event) => {
       {
         image,
         mime,
-      }
+      },
+      "azure",
+      isAttachment
     );
 
     // const url = `https://${process.env.imageUploadBucket}.s3-${process.env.region}.amazonaws.com/${key}`;

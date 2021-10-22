@@ -1,7 +1,7 @@
 import { v4 as uuid } from "uuid";
 import * as fileType from "file-type";
 import { whereInterface } from "../interfaces/database";
-import { createReportDto, fileInputDto } from "../interfaces/service";
+import { createReportDto, fileInputDto, reportInterface } from "../interfaces/service";
 import { BadRequest } from "../lib/breakers";
 import reportRepo from "../repo/ReportRepo";
 import logger from "../logger";
@@ -40,16 +40,20 @@ class ReportSvc {
 
   static saveRecord = async (
     input: createReportDto,
-    fileInput: fileInputDto
+    fileInput: fileInputDto,
+    platform: String = "",
+    isAttachment: Boolean = false
   ) => {
     return new Promise(async (resolve, reject) => {
       try {
         const { description } = input;
-        const attachmentURL: any = await uploadObject(fileInput);
-        const record = {
-          description,
-          attachmentURL,
-        };
+        const record: reportInterface = {
+          description
+        }
+        if(isAttachment) {
+          const attachmentURL: any = await uploadObject(fileInput, platform);
+          record.attachmentURL = attachmentURL;
+        }
         const data = await reportRepo.create(record);
         resolve(data);
       } catch (error) {

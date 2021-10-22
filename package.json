@@ -19,6 +19,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@azure/storage-blob": "^12.8.0",
     "@prisma/client": "^3.2.1",
     "@types/jsonwebtoken": "^8.5.5",
     "aws-sdk": "^2.1008.0",

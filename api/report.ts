@@ -39,8 +39,16 @@ export const findAttachment = async (event) => {
 export const save = async (event) => {
   try {
     const { image, mime, description } = JSON.parse(event.body);
-    if (!description || !image || !mime || !ALLOWED_MIME_TYPE.includes(mime)) {
+    if (!description) {
       BadRequest();
+    }
+    let isAttachment = true
+    if (image || mime){
+      if(!ALLOWED_MIME_TYPE.includes(mime)) {
+        BadRequest();
+      }
+    } else {
+      isAttachment = false
     }
 
     const data = await ReportSvc.saveRecord(
@@ -50,7 +58,9 @@ export const save = async (event) => {
       {
         image,
         mime,
-      }
+      },
+      "s3",
+      isAttachment
     );
 
     // const url = `https://${process.env.imageUploadBucket}.s3-${process.env.region}.amazonaws.com/${key}`;
