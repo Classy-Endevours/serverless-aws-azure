@@ -4,6 +4,7 @@ azure-config.json
 local.settings.json
 .middleware
 env.yml
+envprod.yml
 .serverless
 *.seed
 *.log
