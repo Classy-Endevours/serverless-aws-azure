@@ -6,6 +6,7 @@
   "scripts": {
     "azure": "serverless deploy -c serverlessAzure.yml -g sls-cus-dev-serverless-node-azure-aws-rg",
     "azure:deploy": "serverless deploy -c serverlessAzure.yml",
+    "azure:package": "serverless package -c serverlessAzure.yml",
     "start": "ts-node index.ts",
     "dev": "nodemon --exec \"serverless offline start\"",
     "dev:azure": "serverless offline -c serverlessAzure.yml",

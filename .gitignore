@@ -1,6 +1,7 @@
 
 lib-cov
 azure-config.json
+azure-config-deploy.json
 local.settings.json
 .middleware
 env.yml

@@ -52,6 +52,6 @@ jobs:
       with:
         creds: ${{ secrets.AZURE_CREDENTIALS }}
     - name: Package SLS
-      run: serverless package
+      run: yarn run azure:package
     - name: Deploy zip to azure
       run: az functionapp deployment source config-zip -g ${{ secrets.AZURE_RESOURCE_GROUP }} -n  ${{ secrets.AZURE_APP_SERVICE_NAME }} --src .serverless/serverless-node-azure-aws.zip
