@@ -51,7 +51,8 @@ jobs:
       uses: azure/login@v1
       with:
         creds: ${{ secrets.AZURE_CREDENTIALS }}
-    - name: Package SLS
-      run: yarn run azure:package
+    # - name: Package SLS
+    #   run: yarn run azure:package
     - name: Deploy zip to azure
-      run: az functionapp deployment source config-zip -g ${{ secrets.AZURE_RESOURCE_GROUP }} -n  ${{ secrets.AZURE_APP_SERVICE_NAME }} --src "./.serverless/serverless-node-azure-aws.zip"
+      # run: az functionapp deployment source config-zip -g ${{ secrets.AZURE_RESOURCE_GROUP }} -n  ${{ secrets.AZURE_APP_SERVICE_NAME }} --src "./.serverless/serverless-node-azure-aws.zip"
+      run: yarn run azure
