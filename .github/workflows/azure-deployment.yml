@@ -22,10 +22,10 @@ jobs:
       run: npm install -g serverless
     - name: Serverless azure export
       run: |
-        export AZURE_SUBSCRIPTION_ID ${{secrets.AZURE_SUBSCRIPTION_ID}}
-        export AZURE_TENANT_ID ${{secrets.AZURE_TENANT_ID}}
-        export AZURE_CLIENT_ID ${{secrets.AZURE_CLIENT_ID}}
-        export AZURE_CLIENT_SECRET ${{secrets.AZURE_CLIENT_SECRET}}
+        export AZURE_SUBSCRIPTION_ID=${{secrets.AZURE_SUBSCRIPTION_ID}}
+        export AZURE_TENANT_ID=${{secrets.AZURE_TENANT_ID}}
+        export AZURE_CLIENT_ID=${{secrets.AZURE_CLIENT_ID}}
+        export AZURE_CLIENT_SECRET=${{secrets.AZURE_CLIENT_SECRET}}
     - name: Create env file
       run: | # cp sample.env.yml env.yml
         cat > env.yml << EOF
