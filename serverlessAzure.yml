@@ -16,6 +16,7 @@ provider:
     DATABASE_URL: ${self:custom.environment.DATABASE_URL}
     AZURE_CON_STRING : ${self:custom.environment.AZURE_CON_STRING}
     BLOB_CONTAINER : ${self:custom.environment.BLOB_CONTAINER}
+    PRISMA_CLI_QUERY_ENGINE_TYPE : binary
 
 plugins:
   - serverless-azure-functions
