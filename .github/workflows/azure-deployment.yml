@@ -8,7 +8,7 @@ on:
 
 jobs:
   deploy-dev:
-    runs-on: ubuntu-latest
+    runs-on: windows
     strategy:
       matrix:
         node-version: [14.x]
@@ -19,39 +19,41 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}
     - name: Install Az CLI
-      run: curl -sL https://aka.ms/InstallAzureCLIDeb | sudo bash
+      run: $ProgressPreference = 'SilentlyContinue'; Invoke-WebRequest -Uri https://aka.ms/installazurecliwindows -OutFile .\AzureCLI.msi; Start-Process msiexec.exe -Wait -ArgumentList '/I AzureCLI.msi /quiet'; rm .\AzureCLI.msi
+      shell: pwsh
     - name: Serverless azure export
       run: |
-        sudo -s
-        export AZURE_SUBSCRIPTION_ID=${{secrets.AZURE_SUBSCRIPTION_ID}}
-        export AZURE_TENANT_ID=${{secrets.AZURE_TENANT_ID}}
-        export AZURE_CLIENT_ID=${{secrets.AZURE_CLIENT_ID}}
-        export AZURE_CLIENT_SECRET=${{secrets.AZURE_CLIENT_SECRET}}
+        $env:AZURE_SUBSCRIPTION_ID=${{secrets.AZURE_SUBSCRIPTION_ID}}
+        $env:AZURE_TENANT_ID=${{secrets.AZURE_TENANT_ID}}
+        $env:AZURE_CLIENT_ID=${{secrets.AZURE_CLIENT_ID}}
+        $env:AZURE_CLIENT_SECRET=${{secrets.AZURE_CLIENT_SECRET}}
+      shell: pwsh
     - name: Install Serverless Framework
       run: npm install -g serverless
+      shell: pwsh
     - name: Create env file
-      run: | # cp sample.env.yml env.yml
-        cat > env.yml << EOF
-        ${{ secrets.ENV }}
-        EOF
-    - name: Cache node modules
-      uses: actions/cache@v2
-      env:
-        cache-name: cache-node-modules
-      with:
-        # npm cache files are stored in `~/.npm` on Linux/macOS
-        path: ~/.npm
-        key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/package-lock.json') }}
-        restore-keys: |
-          ${{ runner.os }}-build-${{ env.cache-name }}-
-          ${{ runner.os }}-build-
-          ${{ runner.os }}-
+      run: $text = ${{ secrets.ENV }} | Out-File $text -FilePath env.yml
+      shell: pwsh
+    # - name: Cache node modules
+    #   uses: actions/cache@v2
+    #   env:
+    #     cache-name: cache-node-modules
+    #   with:
+    #     # npm cache files are stored in `~/.npm` on Linux/macOS
+    #     path: ~/.npm
+    #     key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/package-lock.json') }}
+    #     restore-keys: |
+    #       ${{ runner.os }}-build-${{ env.cache-name }}-
+    #       ${{ runner.os }}-build-
+    #       ${{ runner.os }}-
     - name: Install NPM dependencies
       run: yarn install --frozen-lockfile && SLS_DEBUG=*
+      shell: pwsh
     - name: Generate prisma 
       run: yarn gen
-    - name: 'Az CLI login'
-      run: az login --service-principal -u ${{secrets.AZURE_CLIENT_ID}} -p ${{secrets.AZURE_CLIENT_SECRET}} --tenant ${{secrets.AZURE_TENANT_ID}}
+      shell: pwsh
+    # - name: 'Az CLI login'
+    #   run: az login --service-principal -u ${{secrets.AZURE_CLIENT_ID}} -p ${{secrets.AZURE_CLIENT_SECRET}} --tenant ${{secrets.AZURE_TENANT_ID}}
       # with:
       #   creds: ${{ secrets.AZURE_CREDENTIALS }}
     # - name: Package SLS
@@ -59,3 +61,4 @@ jobs:
     - name: Deploy zip to azure
       # run: az functionapp deployment source config-zip -g ${{ secrets.AZURE_RESOURCE_GROUP }} -n  ${{ secrets.AZURE_APP_SERVICE_NAME }} --src "./.serverless/serverless-node-azure-aws.zip"
       run: yarn run azure
+      shell: pwsh
