@@ -18,6 +18,8 @@ jobs:
       uses: actions/setup-node@v1
       with:
         node-version: ${{ matrix.node-version }}
+    - name: Install Az CLI
+      run: curl -sL https://aka.ms/InstallAzureCLIDeb | sudo bash
     - name: Serverless azure export
       run: |
         sudo -s
