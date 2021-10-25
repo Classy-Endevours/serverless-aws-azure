@@ -48,7 +48,7 @@ jobs:
     - name: Generate prisma 
       run: yarn gen
     - name: 'Az CLI login'
-      uses: azure/login@v1
+      uses: azure/login@v1.4.0
       with:
         creds: ${{ secrets.AZURE_CREDENTIALS }}
     # - name: Package SLS
