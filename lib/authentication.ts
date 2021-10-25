@@ -18,8 +18,8 @@ export const getSigningKey = util.promisify(jwksClient.getSigningKey);
 
 export const verifyJwt = util.promisify(verify);
 
-export const getToken = (event) => {
-  const { Authorization: bearer } = event.headers ?? {};
+export const getToken = (event, key='Authorization') => {
+  const { [key]: bearer } = event.headers ?? {};
   if (!bearer) {
     UnAuthorized();
   }

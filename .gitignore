@@ -1,5 +1,7 @@
 
 lib-cov
+azure-config.json
+local.settings.json
 .middleware
 env.yml
 .serverless

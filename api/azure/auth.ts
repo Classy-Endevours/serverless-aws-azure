@@ -17,7 +17,7 @@ const { TOKEN_ISSUER, AUDIENCE } = process.env;
 export const auth0 = async (context, event) => {
   return new Promise(async (resolve, reject) => {
     try {
-      const token = getToken(event);
+      const token = getToken(event, 'authorization');
       const verifiedData = await verifyToken(
         token,
         decode,
