@@ -1,8 +1,9 @@
-import { BlobServiceClient } from "@azure/storage-blob";
 
 export const uploadBlobStrorage = async (body) => {
   return new Promise(async (resolve, reject) => {
     try {
+      const { BlobServiceClient } = await import("@azure/storage-blob");
+
       const blobServiceClient = await BlobServiceClient.fromConnectionString(
         process.env.AZURE_CON_STRING
       );

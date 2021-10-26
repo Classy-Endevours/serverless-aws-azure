@@ -113,6 +113,13 @@ resources:
 
 # package
 package:
-  exclude:
-    - node_modules/**
-    - venv/**
+  exclude:    
+    - .git/**
+    - api/azure/**
+    - tests/**
+    - node_modules/@azure/**
+    - node_modules/@types/**
+    - node_modules/typescript/**
+    - node_modules/serverless-offline/**
+    - node_modules/serverless-azure-functions/**
+    - node_modules/@azure/storage-blob/**

@@ -34,10 +34,6 @@ jobs:
         cat > env.yml << EOF
         ${{ secrets.ENV }}
         EOF
-    - name: Install NPM dependencies
-      run: yarn install --frozen-lockfile && SLS_DEBUG=*
-    - name: Test coverage
-      run: yarn test
     - name: Generate prisma 
       run: yarn gen
     - name: Deploy Lambda functions
