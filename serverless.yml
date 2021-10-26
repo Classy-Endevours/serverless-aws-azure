@@ -114,4 +114,5 @@ resources:
 # package
 package:
   exclude:
-    - node_modules/serverless-offline/**
+    - node_modules/**
+    - venv/**
