@@ -1,19 +1,24 @@
-name: Deploy azure functions
+name: Manually deploy azure function dispatch
 
 on:
-  push:
-    branches:
-      - main
-      - feature/azure
+  workflow_dispatch:
+    inputs:
+        environment:
+          description: 'Define env name'     
+          required: false
+          default: 'prod'
 
 jobs:
-  deploy-dev:
+  deploy:
+    name: manual deploy
     runs-on: ubuntu-latest
     strategy:
       matrix:
         node-version: [14.x]
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v1
+      with:
+        ref: ${{ github.ref }}
     - name: Use Node.js ${{ matrix.node-version }}
       uses: actions/setup-node@v1
       with:
