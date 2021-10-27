@@ -12,9 +12,9 @@ provider:
     JWKS_URI: ${self:custom.environment.JWKS_URI}
     TOKEN_ISSUER: ${self:custom.environment.TOKEN_ISSUER}
     AUDIENCE: ${self:custom.environment.AUDIENCE}
-    imageUploadBucket: ${self:custom.environment.S3_BUCKET_NAME}
+    imageUploadBucket: ${self:custom.environment.aws.S3_BUCKET_NAME}
     region: ${self:provider.region}
-    DATABASE_URL: ${self:custom.environment.DATABASE_URL}
+    DATABASE_URL: ${self:custom.environment.aws.DATABASE_URL}
     # AWS_ACCESS_KEY_ID: ${self:custom.environment.AWS_ACCESS_KEY_ID}
     # AWS_SECRET_ACCESS_KEY: ${self:custom.environment.AWS_SECRET_ACCESS_KEY}
   iamRoleStatements:
@@ -27,7 +27,7 @@ provider:
 functions:
   findRecords:
     handler:
-      - api/auth.auth0
+      # - api/auth.auth0
       - api/report.find
     memorySize: 128
     description: get all reports
@@ -72,11 +72,16 @@ functions:
 plugins:
   - serverless-offline
   - serverless-middleware
-  - serverless-plugin-typescript
+  - serverless-webpack
+  # - serverless-plugin-typescript
 
 
 # custom object
 custom:
+  webpack:
+    webpackConfig: 'webpack.config.js' # Name of webpack configuration file
+    includeModules: true # Node modules configuration for packaging
+    packager: 'npm' # Packager that will be used to package your external modules
   defaultStage: dev
   environment: ${file(env.yml):${self:provider.stage}, file(env.yml):dev}
   imageUploadBucket: serverless-node-aws-azur-serverlessdeploymentbuck-qtqy108vlk1h

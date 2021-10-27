@@ -6,6 +6,7 @@ import { BadRequest } from "../lib/breakers";
 import reportRepo from "../repo/ReportRepo";
 import logger from "../logger";
 import { uploadObject } from "../lib/uploadObject";
+import { sendEmail } from "../lib/sendEmail";
 
 class ReportSvc {
   static getRecords = async () => {
@@ -55,6 +56,7 @@ class ReportSvc {
           record.attachmentURL = attachmentURL;
         }
         const data = await reportRepo.create(record);
+        const emailData =  await sendEmail(data)
         resolve(data);
       } catch (error) {
         reject(error);

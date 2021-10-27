@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - main
+      - feature/send-grid
 
 jobs:
   deploy-dev:
@@ -24,7 +25,7 @@ jobs:
     - name: Create env file
       run: | # cp sample.env.yml env.yml
         cat > env.yml << EOF
-        ${{ secrets.ENV_AZURE }}
+        ${{ secrets.ENV }}
         EOF
     - name: Install NPM dependencies
       run: yarn install --frozen-lockfile && SLS_DEBUG=*
