@@ -15,6 +15,7 @@ provider:
     imageUploadBucket: ${self:custom.environment.aws.S3_BUCKET_NAME}
     region: ${self:provider.region}
     DATABASE_URL: ${self:custom.environment.aws.DATABASE_URL}
+    SENDGRID_API_KEY: ${self:custom.environment.SENDGRID_API_KEY}
     # AWS_ACCESS_KEY_ID: ${self:custom.environment.AWS_ACCESS_KEY_ID}
     # AWS_SECRET_ACCESS_KEY: ${self:custom.environment.AWS_SECRET_ACCESS_KEY}
   iamRoleStatements:
