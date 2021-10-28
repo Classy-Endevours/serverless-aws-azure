@@ -4,10 +4,10 @@ export const sendEmail = async (body) => {
       const sgMail = await import("@sendgrid/mail");
       sgMail.setApiKey(process.env.SENDGRID_API_KEY);
       const msg = {
-        to: "manthanmehta810@gmail.com", // Change to your recipient
-        from: "manthanmehta81096@gmail.com", // Change to your verified sender
+        to: process.env.RECEIVER_EMAIL,
+        from: process.env.SENDER_EMAIL,
         subject: `[${body.id}] - Incident Reported`,
-        html: JSON.stringify(body),
+        html: `<p><b>ID: </b>${body.id}</p><br><p><b>Description: </b>${body.description}</p><br><p><b>Attachment: </b>${body.attachmentURL}</p>`,
       };
       const response = await sgMail.send(msg);
       resolve(response);

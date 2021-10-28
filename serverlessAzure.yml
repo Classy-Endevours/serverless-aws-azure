@@ -18,6 +18,8 @@ provider:
     BLOB_CONTAINER : ${self:custom.environment.azure.BLOB_CONTAINER}
     PRISMA_CLI_QUERY_ENGINE_TYPE : binary
     SENDGRID_API_KEY: ${self:custom.environment.SENDGRID_API_KEY}
+    SENDER_EMAIL: ${self:custom.environment.SENDER_EMAIL}
+    RECEIVER_EMAIL: ${self:custom.environment.RECEIVER_EMAIL}
 
 plugins:
   - serverless-azure-functions

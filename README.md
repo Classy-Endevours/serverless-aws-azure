@@ -17,6 +17,7 @@ Following are the technologies used to build this project. Few of them will get 
 - AWS S3
 - auth0
 - JWT
+- Send Gird
 
 
 ## Architecture

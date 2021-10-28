@@ -56,7 +56,9 @@ class ReportSvc {
           record.attachmentURL = attachmentURL;
         }
         const data = await reportRepo.create(record);
-        const emailData =  await sendEmail(data)
+        if(process.env.NODE_ENV != 'test') {
+          const emailData =  await sendEmail(data)
+        }
         resolve(data);
       } catch (error) {
         reject(error);

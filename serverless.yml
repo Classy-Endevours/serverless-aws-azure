@@ -16,6 +16,8 @@ provider:
     region: ${self:provider.region}
     DATABASE_URL: ${self:custom.environment.aws.DATABASE_URL}
     SENDGRID_API_KEY: ${self:custom.environment.SENDGRID_API_KEY}
+    SENDER_EMAIL: ${self:custom.environment.SENDER_EMAIL}
+    RECEIVER_EMAIL: ${self:custom.environment.RECEIVER_EMAIL}
     # AWS_ACCESS_KEY_ID: ${self:custom.environment.AWS_ACCESS_KEY_ID}
     # AWS_SECRET_ACCESS_KEY: ${self:custom.environment.AWS_SECRET_ACCESS_KEY}
   iamRoleStatements:
@@ -66,8 +68,8 @@ functions:
       - http: 
           path: reports
           method: post
-  auth0Authorization:
-    handler: api/auth.auth0
+  # auth0Authorization:
+  #   handler: api/auth.auth0
 
 # plugins
 plugins:
