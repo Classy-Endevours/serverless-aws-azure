@@ -50,7 +50,7 @@ All the deployment files will be stored under the `.github/workflows`
   - AZURE_TENANT_ID - *azure tenant id with right permission or admin*
   - AZURE_CLIENT_ID - *azure client id with right permission or admin*
   - AZURE_CLIENT_SECRET - *azure client secret with right permission or admin*
-  - ENV_AZURE - *self contained yml content as a string* *read about the keywords in `get-started.md` file*
+  - ENV - *self contained yml content as a string* *read about the keywords in `get-started.md` file*
     - DATABASE_URL
     - JWKS_URI
     - TOKEN_ISSUER
@@ -68,7 +68,7 @@ All the deployment files will be stored under the `.github/workflows`
   - AZURE_TENANT_ID - *azure tenant id with right permission or admin*
   - AZURE_CLIENT_ID - *azure client id with right permission or admin*
   - AZURE_CLIENT_SECRET - *azure client secret with right permission or admin*
-  - ENV_AZURE - *self contained yml content as a string* *read about the keywords in `get-started.md` file*
+  - ENV - *self contained yml content as a string* *read about the keywords in `get-started.md` file*
     - DATABASE_URL
     - JWKS_URI
     - TOKEN_ISSUER
