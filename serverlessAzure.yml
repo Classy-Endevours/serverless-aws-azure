@@ -1,0 +1,93 @@
+service: serverless-node-azure-aws
+frameworkVersion: '2'
+# useDotenv: true
+
+provider:
+  name: azure
+  region: Central US
+  runtime: nodejs14
+  stage: ${opt:stage, self:custom.defaultStage}
+  environment: 
+    JWKS_URI: ${self:custom.environment.JWKS_URI}
+    TOKEN_ISSUER: ${self:custom.environment.TOKEN_ISSUER}
+    AUDIENCE: ${self:custom.environment.AUDIENCE}
+    imageUploadBucket: ${self:custom.environment.S3_BUCKET_NAME}
+    region: ${self:provider.region}
+    DATABASE_URL: ${self:custom.environment.DATABASE_URL}
+    AZURE_CON_STRING : ${self:custom.environment.AZURE_CON_STRING}
+    BLOB_CONTAINER : ${self:custom.environment.BLOB_CONTAINER}
+    PRISMA_CLI_QUERY_ENGINE_TYPE : binary
+
+plugins:
+  - serverless-azure-functions
+  # - serverless-offline
+  - serverless-webpack
+  # - serverless-plugin-typescript
+
+# custom object
+custom:
+  webpack:
+    webpackConfig: 'webpack.config.js' # Name of webpack configuration file
+    includeModules: true # Node modules configuration for packaging
+    packager: 'npm' # Packager that will be used to package your external modules
+  defaultStage: dev
+  environment: ${file(env.yml):${self:provider.stage}, file(env.yml):dev}
+  imageUploadBucket: serverless-node-aws-azur-serverlessdeploymentbuck-qtqy108vlk1h
+
+
+functions:
+  findRecords:
+    handler: api/azure/report.find
+    memorySize: 128
+    description: get all reports
+    events:
+      - http: true
+        method: GET
+        authLevel : anonymous
+        name: req
+        methods:
+          - GET
+        route: ${opt:stage, self:custom.defaultStage}/reports
+  findRecord:
+    handler: api/azure/report.findOne
+    memorySize: 128
+    description: get particular report
+    events:
+      - http: true
+        method: GET
+        authLevel : anonymous
+        name: req
+        methods:
+          - GET
+        route: ${opt:stage, self:custom.defaultStage}/reports/{id}
+  findAttachment:
+    handler: api/azure/report.findAttachment
+    memorySize: 128
+    description: get particular report
+    events:
+      - http: true
+        method: GET
+        authLevel : anonymous
+        name: req
+        methods:
+          - GET
+        route: ${opt:stage, self:custom.defaultStage}/reports/{id}/attachment
+  saveRecord:
+    handler: api/azure/report.save
+    memorySize: 256
+    timeout: 80
+    description: Save Report in the database
+    events:
+      - http: true
+        method: POST
+        authLevel : anonymous
+        name: req
+        methods:
+          - POST
+        route: ${opt:stage, self:custom.defaultStage}/reports
+  
+
+# package
+package:
+  exclude:
+    - node_modules/serverless-offline/**

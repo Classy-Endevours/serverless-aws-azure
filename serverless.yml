@@ -38,12 +38,22 @@ functions:
   findRecord:
     handler:
       - api/auth.auth0
-      - api/report.find
+      - api/report.findOne
     memorySize: 128
     description: get particular report
     events:
       - http: 
           path: reports/{id}
+          method: get
+  findAttachment:
+    handler:
+      - api/auth.auth0
+      - api/report.findAttachment
+    memorySize: 128
+    description: get particular report
+    events:
+      - http: 
+          path: reports/{id}/attachment
           method: get
   saveRecord:
     handler: 
@@ -103,5 +113,13 @@ resources:
 
 # package
 package:
-  exclude:
+  exclude:    
+    - .git/**
+    - api/azure/**
+    - tests/**
+    - node_modules/@azure/**
+    - node_modules/@types/**
+    - node_modules/typescript/**
     - node_modules/serverless-offline/**
+    - node_modules/serverless-azure-functions/**
+    - node_modules/@azure/storage-blob/**

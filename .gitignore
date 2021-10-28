@@ -1,7 +1,11 @@
 
 lib-cov
+azure-config.json
+azure-config-deploy.json
+local.settings.json
 .middleware
 env.yml
+envprod.yml
 .serverless
 *.seed
 *.log
@@ -44,3 +48,4 @@ dist/**/*
 # ignore yarn.lock
 yarn.lock
 .build
+.webpack

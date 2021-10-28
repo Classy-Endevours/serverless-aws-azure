@@ -10,12 +10,14 @@ Following are the technologies used to build this project. Few of them will get 
 - TypeScript
 - AWS Lambda
 - Azure
-- Native Postgres Database
+- Azure BloB
+- Heroku Databases
+- Postgres
+- Prisma
+- AWS S3
 - auth0
 - JWT
-- Amazon S3
-- Prisma
-- PostgresQL
+
 
 ## Architecture
 This project is using a hexagonal architecture which will have database and network interfaces.

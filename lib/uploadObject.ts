@@ -4,8 +4,12 @@ import { S3UploadObject } from "./s3";
 import { v4 as uuid } from "uuid";
 import * as fileType from "file-type";
 import { BadRequest } from "./breakers";
+import { uploadBlobStrorage } from "./blobStorage";
 
-export const uploadObject = async (fileInput: fileInputDto) => {
+export const uploadObject = async (
+  fileInput: fileInputDto,
+  platform: String = ""
+) => {
   return new Promise(async (resolve, reject) => {
     try {
       const { image, mime } = fileInput;
@@ -26,15 +30,21 @@ export const uploadObject = async (fileInput: fileInputDto) => {
 
       logger.info(`writing image to the bucket`);
 
-      const uploader = await S3UploadObject({
-        Body: buffer,
-        Key: key,
-        ContentType: mime,
-        Bucket: process.env.imageUploadBucket,
-        ACL: "public-read",
-      });
-      const attachmentURL = `https://${process.env.imageUploadBucket}.s3.amazonaws.com/${key}`;
-      resolve(attachmentURL);
+      const uploader =
+        platform != "azure"
+          ? await S3UploadObject({
+              Body: buffer,
+              Key: key,
+              ContentType: mime,
+              Bucket: process.env.imageUploadBucket,
+              ACL: "public-read",
+            })
+          : uploadBlobStrorage({
+              Body: buffer,
+              Key: key,
+              ContentType: mime
+            });
+      resolve(uploader);
     } catch (error) {
       reject(error);
     }
