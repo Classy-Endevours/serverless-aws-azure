@@ -14,7 +14,7 @@ export const S3UploadObject = async (body) => {
           console.log("Some error occurred: ", err);
           reject(err);
         }
-        const attachmentURL = `https://${process.env.imageUploadBucket}.s3.amazonaws.com/${body.key}`;
+        const attachmentURL = `https://${process.env.imageUploadBucket}.s3.amazonaws.com/${body.Key}`;
         resolve(attachmentURL);
       });
     } catch (error) {
