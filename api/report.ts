@@ -38,12 +38,12 @@ export const findAttachment = async (event) => {
 
 export const save = async (event) => {
   try {
-    const { image, mime, description } = JSON.parse(event.body);
+    const { attachment, mime, description } = JSON.parse(event.body);
     if (!description) {
       BadRequest();
     }
     let isAttachment = true
-    if (image || mime){
+    if (attachment || mime){
       if(!ALLOWED_MIME_TYPE.includes(mime)) {
         BadRequest();
       }
@@ -56,7 +56,7 @@ export const save = async (event) => {
         description,
       },
       {
-        image,
+        attachment,
         mime,
       },
       "s3",

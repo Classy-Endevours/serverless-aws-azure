@@ -37,12 +37,12 @@ export const findAttachment = async (context, event) => {
 export const save = async (context, event) => {
   try {
     // const authResponse = await auth0(context, event);
-    const { image="", mime="", description } = event.body;
+    const { attachment="", mime="", description } = event.body;
     if (!description) {
       BadRequest();
     }
     let isAttachment = true
-    if (image || mime){
+    if (attachment || mime){
       if(!ALLOWED_MIME_TYPE.includes(mime)) {
         BadRequest();
       }
@@ -55,7 +55,7 @@ export const save = async (context, event) => {
         description,
       },
       {
-        image,
+        attachment,
         mime,
       },
       "azure",
