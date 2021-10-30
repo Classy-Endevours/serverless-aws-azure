@@ -1,8 +1,19 @@
 export const report = {
     save: {
-        success: `{"image":"test","mime":"image/jpeg","description":"test"}`,
+        success: `{"attachment":"test","mime":"image/jpeg","description":"test"}`,
         successPartial: `{"description":"test"}`,
-        failed: `{"image":"test","mime":"image/jpeg"}`,
-        failedPartial: `{"image":"test","mime":"test","description":"test"}`,
+        failed: `{"attachment":"test","mime":"image/jpeg"}`,
+        failedPartial: `{"attachment":"test","mime":"test","description":"test"}`,
+    },
+    saveService: {
+        success: {
+            input: {
+                description: 'test'
+            },
+            fileInput: {
+                attachment: 'test',
+                mime: 'image/jpeg'
+            }
+        }
     }
 }

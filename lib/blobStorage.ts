@@ -1,3 +1,4 @@
+import logger from "../logger";
 
 export const uploadBlobStrorage = async (body) => {
   return new Promise(async (resolve, reject) => {
@@ -19,8 +20,7 @@ export const uploadBlobStrorage = async (body) => {
       if (!uploadBlobResponse) throw new Error("Blob upload failed");
       resolve(blockBlobClient.url);
     } catch (error) {
-      console.log({error});
-      
+      logger.error(error)
       reject(error);
     }
   });

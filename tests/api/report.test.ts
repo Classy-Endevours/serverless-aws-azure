@@ -103,7 +103,7 @@ describe("Post one report test cases", () => {
     });
     expect(response?.statusCode).toEqual(400);
   });
-  it("should return 400 for bad request incase wrong image provided provided", async () => {
+  it("should return 400 for bad request incase wrong attachment provided", async () => {
     const mockFn = jest.fn().mockRejectedValue(["worked"]);
     ReportSvc.saveRecord = mockFn;
     const response = await save({
