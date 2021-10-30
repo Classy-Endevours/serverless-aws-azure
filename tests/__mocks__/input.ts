@@ -4,5 +4,16 @@ export const report = {
         successPartial: `{"description":"test"}`,
         failed: `{"attachment":"test","mime":"image/jpeg"}`,
         failedPartial: `{"attachment":"test","mime":"test","description":"test"}`,
+    },
+    saveService: {
+        success: {
+            input: {
+                description: 'test'
+            },
+            fileInput: {
+                attachment: 'test',
+                mime: 'image/jpeg'
+            }
+        }
     }
 }

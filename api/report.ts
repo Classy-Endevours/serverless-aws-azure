@@ -2,6 +2,8 @@ import response from "../util/response";
 import { BadRequest } from "../lib/breakers";
 import ReportSvc from "../service/ReportSvc";
 import { ALLOWED_MIME_TYPE } from "../constant/allowedInput";
+import { PLATFORM } from "../constant/app";
+import logger from "../logger";
 
 export const find = async (event) => {
   try {
@@ -43,7 +45,7 @@ export const save = async (event) => {
       BadRequest();
     }
     let isAttachment = true
-    if (attachment || mime){
+    if (attachment && mime){
       if(!ALLOWED_MIME_TYPE.includes(mime)) {
         BadRequest();
       }
@@ -59,16 +61,14 @@ export const save = async (event) => {
         attachment,
         mime,
       },
-      "s3",
+      PLATFORM.OBJECT_STORAGE.S3,
       isAttachment
     );
-
-    // const url = `https://${process.env.imageUploadBucket}.s3-${process.env.region}.amazonaws.com/${key}`;
     return response.create(200, {
       data,
     });
   } catch (error) {
-    console.log({ error });
+    logger.error(error)
     return response.failed(error);
   }
 };

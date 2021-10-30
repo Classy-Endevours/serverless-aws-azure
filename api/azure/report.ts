@@ -3,6 +3,7 @@ import { BadRequest } from "../../lib/breakers";
 import ReportSvc from "../../service/ReportSvc";
 import { ALLOWED_MIME_TYPE } from "../../constant/allowedInput";
 import { auth0 } from "./auth";
+import { PLATFORM } from "../../constant/app";
 
 export const find = async (context, event) => {
   try {
@@ -36,7 +37,6 @@ export const findAttachment = async (context, event) => {
 
 export const save = async (context, event) => {
   try {
-    // const authResponse = await auth0(context, event);
     const { attachment="", mime="", description } = event.body;
     if (!description) {
       BadRequest();
@@ -58,7 +58,7 @@ export const save = async (context, event) => {
         attachment,
         mime,
       },
-      "azure",
+      PLATFORM.OBJECT_STORAGE.AZURE,
       isAttachment
     );
 

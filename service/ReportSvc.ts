@@ -66,7 +66,7 @@ class ReportSvc {
   static saveRecord = async (
     input: createReportDto,
     fileInput: fileInputDto,
-    platform: String = "",
+    platform: String,
     isAttachment: Boolean = false
   ) => {
     return new Promise(async (resolve, reject) => {
@@ -80,9 +80,7 @@ class ReportSvc {
           record.attachmentURL = attachmentURL;
         }
         const data = await reportRepo.create(record);
-        if(process.env.NODE_ENV != 'test') {
-          const emailData =  await sendEmail(data)
-        }
+        const emailData = await sendEmail(data)
         resolve(data);
       } catch (error) {
         reject(error);
