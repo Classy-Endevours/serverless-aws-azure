@@ -18,6 +18,9 @@ export const find = async (event) => {
 
 export const findOne = async (event) => {
   try {
+    if(isNaN(event?.pathParameters?.id)) {
+      BadRequest();
+    }
     const data = await ReportSvc.getRecord(event?.pathParameters?.id);
     return response.create(200, {
       data,
@@ -29,6 +32,9 @@ export const findOne = async (event) => {
 
 export const findAttachment = async (event) => {
   try {
+    if(isNaN(event?.pathParameters?.id)) {
+      BadRequest();
+    }
     const data = await ReportSvc.getAttachment(event?.pathParameters?.id);
     return response.create(200, {
       data,
