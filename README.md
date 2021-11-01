@@ -18,6 +18,7 @@ Following are the technologies used to build this project. Few of them will get 
 - PostgresQL
 
 ## Architecture
+https://lucid.app/documents/view/73e67c0a-ae9b-4da0-a6e7-941f764df4bc
 This project is using a hexagonal architecture which will have database and network interfaces.
 The core logic is isolated with the interfaces. 
 Version-one architecture workflow diagram is as follow
