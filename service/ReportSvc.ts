@@ -53,13 +53,11 @@ class ReportSvc {
             attachmentURL: true,
           },
         });
-        
         if (!data) {
           NoRecordFound();
         } else if (!data.attachmentURL) {
           NoRecordFound();
         }
-
         resolve(data);
       } catch (error) {
         reject(error)
