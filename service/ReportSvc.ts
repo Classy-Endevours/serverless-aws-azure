@@ -53,14 +53,11 @@ class ReportSvc {
             attachmentURL: true,
           },
         });
-        if(process.env.NODE_ENV != "test") {
-          if (!data) {
-            NoRecordFound();
-          } else if (!data.attachmentURL) {
-            NoRecordFound();
-          }
+        if (!data) {
+          NoRecordFound();
+        } else if (!data.attachmentURL) {
+          NoRecordFound();
         }
-
         resolve(data);
       } catch (error) {
         reject(error)

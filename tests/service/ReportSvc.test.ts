@@ -68,7 +68,9 @@ describe("Get Record test cases", () => {
 
 describe("Get Attachments test cases", () => {
   it("should return object if id is valid", async () => {
-    const mockFn = jest.fn().mockReturnValue(["worked"]);
+    const mockFn = jest.fn().mockReturnValue({
+      attachmentURL: 'test'
+    });
     reportRepo.findUnique = mockFn;
     const response = await ReportSvc.getAttachment("1");
     expect(response).toEqual(expect.any(Object));
