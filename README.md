@@ -24,10 +24,22 @@ Following are the technologies used to build this project. Few of them will get 
 This project is using a hexagonal architecture which will have database and network interfaces.
 The core logic is isolated with the interfaces. 
 Version-one architecture workflow diagram is as follow
-![Serverless Azure and AWS](https://user-images.githubusercontent.com/24205953/136236029-0a608b1b-dbc1-4f4c-b6f0-39d174d8eaae.png)
+<!-- ![Serverless Azure and AWS](https://user-images.githubusercontent.com/24205953/136236029-0a608b1b-dbc1-4f4c-b6f0-39d174d8eaae.png) -->
+![Serverless Azure and AWS](documentation/images/serverlessWithLambdaAndAzure.png)
 
 ## Database Diagram
-*This will be added sooner once the database setup has been done*
+![Database Design](documentation/images/databaseDesign.png)
+
+```
+Enum statusEnum {
+  new
+  inProgress
+  done
+  rejected
+}
+```
+
+
 
 ## Security
 To ensure security for the application, we have used auth0 service and apparently with JWT. Following will be process of the authentication
