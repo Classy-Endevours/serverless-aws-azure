@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - main
+      - feature/fixes-2
 
 jobs:
   deploy-dev:

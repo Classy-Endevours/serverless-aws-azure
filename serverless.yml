@@ -33,6 +33,7 @@ functions:
       - api/auth.auth0
       - api/report.find
     memorySize: 128
+    timeout: 50
     description: get all reports
     events:
       - http: 
@@ -43,6 +44,7 @@ functions:
       - api/auth.auth0
       - api/report.findOne
     memorySize: 128
+    timeout: 50
     description: get particular report
     events:
       - http: 
@@ -53,6 +55,7 @@ functions:
       - api/auth.auth0
       - api/report.findAttachment
     memorySize: 128
+    timeout: 50
     description: get particular report
     events:
       - http: 

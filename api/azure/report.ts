@@ -18,6 +18,9 @@ export const find = async (context, event) => {
 export const findOne = async (context, event) => {
   try {
     const authResponse = await auth0(context, event);
+    if(isNaN(context?.bindingData?.id)) {
+      BadRequest();
+    }
     const data = await ReportSvc.getRecord(context?.bindingData?.id);
     context.res = response.createAzure(200, data);
   } catch (error) {
@@ -28,6 +31,9 @@ export const findOne = async (context, event) => {
 export const findAttachment = async (context, event) => {
   try {
     const authResponse = await auth0(context, event);
+    if(isNaN(context?.bindingData?.id)) {
+      BadRequest();
+    }
     const data = await ReportSvc.getAttachment(context?.bindingData?.id);
     context.res = response.createAzure(200, data);
   } catch (error) {
