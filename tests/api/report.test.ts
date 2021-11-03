@@ -23,7 +23,7 @@ describe("Get one report test cases", () => {
     const mockFn = jest.fn().mockRejectedValue("failed");
     ReportSvc.getRecord = mockFn;
     const response = await findOne({});
-    expect(response?.statusCode).toEqual(500);
+    expect(response?.statusCode).toEqual(400);
   });
   it("should return 200 if service is valid event and response", async () => {
     const mockFn = jest.fn().mockReturnValue(["worked"]);
@@ -39,13 +39,13 @@ describe("Get one report test cases", () => {
     const mockFn = jest.fn().mockRejectedValue("failed");
     ReportSvc.getRecord = mockFn;
     const response = await findOne(null);
-    expect(response?.statusCode).toEqual(500);
+    expect(response?.statusCode).toEqual(400);
   });
   it("should return 500 if service is valid response", async () => {
     const mockFn = jest.fn().mockRejectedValue("failed");
     ReportSvc.getRecord = mockFn;
     const response = await findOne({});
-    expect(response?.statusCode).toEqual(500);
+    expect(response?.statusCode).toEqual(400);
   });
 });
 describe("Get one report attachment test cases", () => {
@@ -53,7 +53,7 @@ describe("Get one report attachment test cases", () => {
     const mockFn = jest.fn().mockReturnValue(["worked"]);
     ReportSvc.getAttachment = mockFn;
     const response = await findAttachment({});
-    expect(response?.statusCode).toEqual(200);
+    expect(response?.statusCode).toEqual(400);
   });
   it("should return 200 if service is valid event and response", async () => {
     const mockFn = jest.fn().mockReturnValue(["worked"]);
@@ -69,13 +69,13 @@ describe("Get one report attachment test cases", () => {
     const mockFn = jest.fn().mockRejectedValue("failed");
     ReportSvc.getAttachment = mockFn;
     const response = await findAttachment(null);
-    expect(response?.statusCode).toEqual(500);
+    expect(response?.statusCode).toEqual(400);
   });
   it("should return 500 if service is valid response", async () => {
     const mockFn = jest.fn().mockRejectedValue("failed");
     ReportSvc.getAttachment = mockFn;
     const response = await findAttachment({});
-    expect(response?.statusCode).toEqual(500);
+    expect(response?.statusCode).toEqual(400);
   });
 });
 describe("Post one report test cases", () => {
@@ -103,7 +103,7 @@ describe("Post one report test cases", () => {
     });
     expect(response?.statusCode).toEqual(400);
   });
-  it("should return 400 for bad request incase wrong image provided provided", async () => {
+  it("should return 400 for bad request incase wrong attachment provided", async () => {
     const mockFn = jest.fn().mockRejectedValue(["worked"]);
     ReportSvc.saveRecord = mockFn;
     const response = await save({

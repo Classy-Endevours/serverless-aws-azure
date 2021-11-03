@@ -2,7 +2,7 @@ export interface createReportDto {
     description: string
 }
 export interface fileInputDto {
-    image: string,
+    attachment: string,
     mime: string
 }
 export interface reportInterface {

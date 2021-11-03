@@ -12,10 +12,10 @@ export const uploadObject = async (
 ) => {
   return new Promise(async (resolve, reject) => {
     try {
-      const { image, mime } = fileInput;
-      let imageData = image;
-      if (image.substr(0, 7) === "base64,") {
-        imageData = image.substr(7, image.length);
+      const { attachment, mime } = fileInput;
+      let imageData = attachment;
+      if (attachment.substr(0, 7) === "base64,") {
+        imageData = attachment.substr(7, attachment.length);
       }
       const buffer = Buffer.from(imageData, "base64");
       const fileInfo = await fileType.fromBuffer(buffer);
@@ -28,7 +28,7 @@ export const uploadObject = async (
       const name = uuid();
       const key = `${name}.${detectedExt}`;
 
-      logger.info(`writing image to the bucket`);
+      logger.info(`writing attachment to the bucket`);
 
       const uploader =
         platform != "azure"

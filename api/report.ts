@@ -2,6 +2,8 @@ import response from "../util/response";
 import { BadRequest } from "../lib/breakers";
 import ReportSvc from "../service/ReportSvc";
 import { ALLOWED_MIME_TYPE } from "../constant/allowedInput";
+import { PLATFORM } from "../constant/app";
+import logger from "../logger";
 
 export const find = async (event) => {
   try {
@@ -16,6 +18,9 @@ export const find = async (event) => {
 
 export const findOne = async (event) => {
   try {
+    if(isNaN(event?.pathParameters?.id)) {
+      BadRequest();
+    }
     const data = await ReportSvc.getRecord(event?.pathParameters?.id);
     return response.create(200, {
       data,
@@ -27,6 +32,9 @@ export const findOne = async (event) => {
 
 export const findAttachment = async (event) => {
   try {
+    if(isNaN(event?.pathParameters?.id)) {
+      BadRequest();
+    }
     const data = await ReportSvc.getAttachment(event?.pathParameters?.id);
     return response.create(200, {
       data,
@@ -38,12 +46,12 @@ export const findAttachment = async (event) => {
 
 export const save = async (event) => {
   try {
-    const { image, mime, description } = JSON.parse(event.body);
+    const { attachment, mime, description } = JSON.parse(event.body);
     if (!description) {
       BadRequest();
     }
     let isAttachment = true
-    if (image || mime){
+    if (attachment && mime){
       if(!ALLOWED_MIME_TYPE.includes(mime)) {
         BadRequest();
       }
@@ -56,19 +64,17 @@ export const save = async (event) => {
         description,
       },
       {
-        image,
+        attachment,
         mime,
       },
-      "s3",
+      PLATFORM.OBJECT_STORAGE.S3,
       isAttachment
     );
-
-    // const url = `https://${process.env.imageUploadBucket}.s3-${process.env.region}.amazonaws.com/${key}`;
     return response.create(200, {
       data,
     });
   } catch (error) {
-    console.log({ error });
+    logger.error(error)
     return response.failed(error);
   }
 };

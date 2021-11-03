@@ -13,10 +13,13 @@ provider:
     AUDIENCE: ${self:custom.environment.AUDIENCE}
     imageUploadBucket: ${self:custom.environment.S3_BUCKET_NAME}
     region: ${self:provider.region}
-    DATABASE_URL: ${self:custom.environment.DATABASE_URL}
-    AZURE_CON_STRING : ${self:custom.environment.AZURE_CON_STRING}
-    BLOB_CONTAINER : ${self:custom.environment.BLOB_CONTAINER}
+    DATABASE_URL: ${self:custom.environment.azure.DATABASE_URL}
+    AZURE_CON_STRING : ${self:custom.environment.azure.AZURE_CON_STRING}
+    BLOB_CONTAINER : ${self:custom.environment.azure.BLOB_CONTAINER}
     PRISMA_CLI_QUERY_ENGINE_TYPE : binary
+    SENDGRID_API_KEY: ${self:custom.environment.SENDGRID_API_KEY}
+    SENDER_EMAIL: ${self:custom.environment.SENDER_EMAIL}
+    RECEIVER_EMAIL: ${self:custom.environment.RECEIVER_EMAIL}
 
 plugins:
   - serverless-azure-functions
