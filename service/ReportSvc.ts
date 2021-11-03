@@ -1,12 +1,10 @@
-import { v4 as uuid } from "uuid";
-import * as fileType from "file-type";
 import { whereInterface } from "../interfaces/database";
 import { createReportDto, fileInputDto, reportInterface, saveReportInterface, updateStatusDto } from "../interfaces/service";
-import { BadRequest, NoRecordFound } from "../lib/breakers";
+import { NoRecordFound } from "../lib/breakers";
 import reportRepo from "../repo/ReportRepo";
 import logger from "../logger";
 import { uploadObject } from "../lib/uploadObject";
-import { sendEmail } from "../lib/sendEmail";
+import { sendInternalMail } from "../lib/sendEmail";
 
 class ReportSvc {
   static getRecords = async () => {
@@ -129,9 +127,10 @@ class ReportSvc {
           record.data.attachmentURL = attachmentURL;
         }
         const data = await reportRepo.create(record);
-        const emailData = await sendEmail(data);
+        const emailData = await sendInternalMail(data);
         resolve(data);
       } catch (error) {
+        logger.error('ReportSvc::saveRecord::catch:: ', error)
         reject(error);
       }
     });
@@ -168,6 +167,7 @@ class ReportSvc {
         }
         resolve(data);
       } catch (error) {
+        logger.error('ReportSvc::updateStatus::catch:: ', error)
         reject(error);
       }
     });
