@@ -48,7 +48,7 @@ export const save = async (context, event) => {
       BadRequest();
     }
     let isAttachment = true
-    if (attachment || mime){
+    if (attachment && mime){
       if(!ALLOWED_MIME_TYPE.includes(mime)) {
         BadRequest();
       }
