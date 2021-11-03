@@ -71,6 +71,28 @@ functions:
       - http: 
           path: reports
           method: post
+  updateStatus:
+    handler: 
+      - api/auth.auth0
+      - api/report.updateStatus
+    memorySize: 256
+    timeout: 80
+    description: Update status of the Report in the database
+    events:
+      - http: 
+          path: reports/status/{id}
+          method: put
+  findStatus:
+    handler: 
+      - api/auth.auth0
+      - api/report.findStatus
+    memorySize: 256
+    timeout: 80
+    description: Get status of the Report from the database
+    events:
+      - http: 
+          path: reports/status/{id}
+          method: get
   # auth0Authorization:
   #   handler: api/auth.auth0
 

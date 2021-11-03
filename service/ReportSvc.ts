@@ -81,10 +81,7 @@ class ReportSvc {
           where,
           select: {
             statusReports: true,
-          },
-          include: {
-            statusReports: true,
-          },
+          }
         });
         if (!data) {
           NoRecordFound();

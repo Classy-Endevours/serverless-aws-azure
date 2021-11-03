@@ -78,7 +78,7 @@ export const save = async (context, event) => {
 
 export const updateStatus = async (context, event) => {
   try {
-    // const authResponse = await auth0(context, event);
+    const authResponse = await auth0(context, event);
     if (isNaN(context?.bindingData?.id)) {
       BadRequest();
     }
@@ -101,21 +101,11 @@ export const updateStatus = async (context, event) => {
 
 export const findStatus = async (context, event) => {
   try {
-    // const authResponse = await auth0(context, event);
-    if (isNaN(context?.bindingData?.id)) {
+    const authResponse = await auth0(context, event);
+    if(isNaN(context?.bindingData?.id)) {
       BadRequest();
     }
-    const { status, comments = "" } = event.body;
-    if (!status && !Object.values(statusEnum)?.includes(status)) {
-      BadRequest();
-    }
-    const input: updateStatusDto = {
-      status,
-    };
-    if (comments != "") {
-      input.comments = comments;
-    }
-    const data = await ReportSvc.updateStatus(context?.bindingData?.id, input);
+    const data = await ReportSvc.getStatus(context?.bindingData?.id);
     context.res = response.createAzure(200, data);
   } catch (error) {
     context.res = response.failedAzure(error);

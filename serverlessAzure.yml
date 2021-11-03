@@ -101,6 +101,19 @@ functions:
         methods:
           - PUT
         route: ${opt:stage, self:custom.defaultStage}/reports/status/{id}
+  findStatus:
+    handler: api/azure/report.findStatus
+    memorySize: 256
+    timeout: 50
+    description: Get status of the Report from the database
+    events:
+      - http: true
+        method: GET
+        authLevel : anonymous
+        name: req
+        methods:
+          - GET
+        route: ${opt:stage, self:custom.defaultStage}/reports/status/{id}
   
 
 # package
