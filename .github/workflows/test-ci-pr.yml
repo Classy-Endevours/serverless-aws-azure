@@ -33,7 +33,9 @@ jobs:
         node-version: ${{ matrix.node-version }}
     - name: Install Dependencies
       run: yarn install --frozen-lockfile
-    - name: install & test
+    - name: Unit testing
+      run: yarn test
+    - name: Integration testing
       run: |
         yarn prisma db push
         yarn test:integration
