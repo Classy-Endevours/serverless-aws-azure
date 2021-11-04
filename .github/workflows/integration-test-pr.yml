@@ -31,9 +31,10 @@ jobs:
       uses: actions/setup-node@v1
       with:
         node-version: ${{ matrix.node-version }}
+    - name: Install Dependencies
+      run: yarn install --frozen-lockfile
     - name: install & test
       run: |
-        yarn --frozen-lockfile
         yarn prisma db push
         yarn test:integration
       env:
