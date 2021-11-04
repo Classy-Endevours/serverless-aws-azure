@@ -1,9 +1,8 @@
 name: run integration testing
 
 on:
-  push:
-    branches:
-      - feature/integration-testing
+  pull_request:
+    branches: [main, dev]
 
 jobs:
   integration-test:
