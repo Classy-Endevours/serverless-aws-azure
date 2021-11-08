@@ -10,7 +10,7 @@ export enum statusEnum {
   new = "new",
   inProgress = "inProgress",
   done = "done",
-  rejected = "done",
+  rejected = "rejected",
 }
 export interface fileInputDto {
     attachment: string,

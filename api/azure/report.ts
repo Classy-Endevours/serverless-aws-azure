@@ -8,7 +8,7 @@ import { statusEnum, updateStatusDto } from "../../interfaces/service";
 
 export const find = async (context, event) => {
   try {
-    // const authResponse = await auth0(context, event);
+    const authResponse = await auth0(context, event);
     const data = await ReportSvc.getRecords();
     context.res = response.createAzure(200, data);
   } catch (error) {
@@ -18,7 +18,7 @@ export const find = async (context, event) => {
 
 export const findOne = async (context, event) => {
   try {
-    // const authResponse = await auth0(context, event);
+    const authResponse = await auth0(context, event);
     if(isNaN(context?.bindingData?.id)) {
       BadRequest();
     }
