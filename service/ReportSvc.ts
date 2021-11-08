@@ -88,7 +88,7 @@ class ReportSvc {
         } else if (data.statusReports.length <= 0) {
           NoRecordFound();
         }
-        resolve(data);
+        resolve(data.statusReports);
       } catch (error) {
         reject(error);
       }
@@ -125,7 +125,7 @@ class ReportSvc {
           record.data.attachmentURL = attachmentURL;
         }
         const data = await reportRepo.create(record);
-        const sendBody = await createRecordBody(data)
+        const sendBody = createRecordBody(data)
         const emailData = await sendInternalMail(sendBody);
         if(email) {
           const userEmailData = await sendExternalMail([email], sendBody)
@@ -168,7 +168,7 @@ class ReportSvc {
           NoRecordFound();
         }
         if(data.email) {
-          const sendBody = await updateStatusBody(data, input)
+          const sendBody = updateStatusBody(data, input)
           const userEmailData = await sendExternalMail([data.email], sendBody)
         }
         resolve(data);

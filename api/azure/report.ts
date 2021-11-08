@@ -89,7 +89,7 @@ export const updateStatus = async (context, event) => {
       BadRequest();
     }
     const { status, comments = "" } = event.body;
-    if (!status && !Object.values(statusEnum)?.includes(status)) {
+    if (!status || !Object.values(statusEnum)?.includes(status)) {
       BadRequest();
     }
     const input: updateStatusDto = {

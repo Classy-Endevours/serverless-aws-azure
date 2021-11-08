@@ -92,13 +92,13 @@ export const updateStatus = async (event) => {
       BadRequest();
     }
     const { status, comments = "" } = JSON.parse(event.body);
-    if (!status && !Object.values(statusEnum)?.includes(status)) {
+    if (!status || !Object.values(statusEnum)?.includes(status)) {
       BadRequest();
     }
     const input: updateStatusDto = {
       status,
     };
-    if (comments != "") {
+    if (comments !== "") {
       input.comments = comments;
     }
     const data = await ReportSvc.updateStatus(event?.pathParameters?.id, input);
