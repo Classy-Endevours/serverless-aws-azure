@@ -4,6 +4,7 @@ import ReportSvc from "../../service/ReportSvc";
 import { ALLOWED_MIME_TYPE } from "../../constant/allowedInput";
 import { auth0 } from "./auth";
 import { PLATFORM } from "../../constant/app";
+import { statusEnum, updateStatusDto } from "../../interfaces/service";
 
 export const find = async (context, event) => {
   try {
@@ -69,6 +70,42 @@ export const save = async (context, event) => {
     );
 
     // const url = `https://${process.env.imageUploadBucket}.s3-${process.env.region}.amazonaws.com/${key}`;
+    context.res = response.createAzure(200, data);
+  } catch (error) {
+    context.res = response.failedAzure(error);
+  }
+};
+
+export const updateStatus = async (context, event) => {
+  try {
+    const authResponse = await auth0(context, event);
+    if (isNaN(context?.bindingData?.id)) {
+      BadRequest();
+    }
+    const { status, comments = "" } = event.body;
+    if (!status && !Object.values(statusEnum)?.includes(status)) {
+      BadRequest();
+    }
+    const input: updateStatusDto = {
+      status,
+    };
+    if (comments != "") {
+      input.comments = comments;
+    }
+    const data = await ReportSvc.updateStatus(context?.bindingData?.id, input);
+    context.res = response.createAzure(200, data);
+  } catch (error) {
+    context.res = response.failedAzure(error);
+  }
+};
+
+export const findStatus = async (context, event) => {
+  try {
+    const authResponse = await auth0(context, event);
+    if(isNaN(context?.bindingData?.id)) {
+      BadRequest();
+    }
+    const data = await ReportSvc.getStatus(context?.bindingData?.id);
     context.res = response.createAzure(200, data);
   } catch (error) {
     context.res = response.failedAzure(error);
