@@ -4,7 +4,7 @@ import { NoRecordFound } from "../lib/breakers";
 import reportRepo from "../repo/ReportRepo";
 import logger from "../logger";
 import { uploadObject } from "../lib/uploadObject";
-import { sendInternalMail } from "../lib/sendEmail";
+import { sendInternalMail, sendExternalMail, createRecordBody, updateStatusBody } from "../lib/sendEmail";
 
 class ReportSvc {
   static getRecords = async () => {
@@ -103,10 +103,11 @@ class ReportSvc {
   ) => {
     return new Promise(async (resolve, reject) => {
       try {
-        const { description } = input;
+        const { description, email } = input;
         const record: saveReportInterface = {
           data: {
             description,
+            email,
             statusReports: {
               create: [
                 {
@@ -124,7 +125,11 @@ class ReportSvc {
           record.data.attachmentURL = attachmentURL;
         }
         const data = await reportRepo.create(record);
-        const emailData = await sendInternalMail(data);
+        const sendBody = await createRecordBody(data)
+        const emailData = await sendInternalMail(sendBody);
+        if(email) {
+          const userEmailData = await sendExternalMail([email], sendBody)
+        }
         resolve(data);
       } catch (error) {
         logger.error('ReportSvc::saveRecord::catch:: ', error)
@@ -161,6 +166,10 @@ class ReportSvc {
         });
         if (!data) {
           NoRecordFound();
+        }
+        if(data.email) {
+          const sendBody = await updateStatusBody(data, input)
+          const userEmailData = await sendExternalMail([data.email], sendBody)
         }
         resolve(data);
       } catch (error) {

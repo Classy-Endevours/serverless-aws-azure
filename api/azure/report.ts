@@ -1,7 +1,7 @@
 import response from "../../util/response";
 import { BadRequest } from "../../lib/breakers";
 import ReportSvc from "../../service/ReportSvc";
-import { ALLOWED_MIME_TYPE } from "../../constant/allowedInput";
+import { ALLOWED_MIME_TYPE, EMAIL_REGEX } from "../../constant/allowedInput";
 import { auth0 } from "./auth";
 import { PLATFORM } from "../../constant/app";
 import { statusEnum, updateStatusDto } from "../../interfaces/service";
@@ -44,10 +44,15 @@ export const findAttachment = async (context, event) => {
 
 export const save = async (context, event) => {
   try {
-    const { attachment="", mime="", description } = event.body;
+    const { attachment="", mime="", description, email = null } = event.body;
     if (!description) {
       BadRequest();
     }
+
+    if(email && !EMAIL_REGEX.test(email)) {
+      BadRequest();
+    }
+
     let isAttachment = true
     if (attachment && mime){
       if(!ALLOWED_MIME_TYPE.includes(mime)) {
@@ -60,6 +65,7 @@ export const save = async (context, event) => {
     const data = await ReportSvc.saveRecord(
       {
         description,
+        email,
       },
       {
         attachment,

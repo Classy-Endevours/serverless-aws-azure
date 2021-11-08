@@ -1,5 +1,6 @@
 export interface createReportDto {
     description: string
+    email?: string
 }
 export interface updateStatusDto {
     status: statusEnum,
@@ -26,6 +27,7 @@ export interface includeReportInterface {
 }
 export interface reportInterface {
     description: String,
+    email?: String,
     attachmentURL?: string
     statusReports: createStatusReportInterface,
 }
