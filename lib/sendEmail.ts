@@ -1,3 +1,4 @@
+import { updateStatusDto } from "../interfaces/service";
 import logger from "../logger";
 
 export const sendInternalMail = async (body: any) => {
@@ -27,12 +28,8 @@ export const sendEmail = async (body: any, RECEIVER_EMAIL: string[], SENDER_EMAI
         const msg = {
           to: RECEIVER_EMAIL,
           from: SENDER_EMAIL,
-          subject: `[${body.id}] - Incident Reported`,
-          html: `<p><b>ID: </b>${body.id}</p><br><p><b>Description: </b>${
-            body.description
-          }</p><br><p><b>Attachment: </b>${
-            !body.attachmentURL ? "No Attachment" : body.attachmentURL
-          }</p>`,
+          subject: body.subject,
+          html: body.html,
         };
         const response = await sgMail.send(msg);
         emailResponse.data = response;
@@ -44,3 +41,25 @@ export const sendEmail = async (body: any, RECEIVER_EMAIL: string[], SENDER_EMAI
     }
   });
 };
+
+export const createRecordBody = (body: any) => {
+  return {
+    subject: `[${body.id}] - Incident Reported`,
+    html: `<p><b>ID: </b>${body.id}</p><br><p><b>Description: </b>${
+      body.description
+    }</p><br><p><b>Attachment: </b>${
+      !body.attachmentURL ? "No Attachment" : body.attachmentURL
+    }</p>`,
+  };
+};
+
+export const updateStatusBody = (body: any, statusRecord: updateStatusDto) => {
+  return {
+    subject: `[${body.id}] - Incident Report - updated`,
+    html: `<p><b>ID: </b>${body.id}</p><br><p><b>Status: </b>${
+      statusRecord.status.toUpperCase()
+    }</p><br><p><b>Comments: </b>${
+      !statusRecord.comments ? "No Comments" : statusRecord.comments
+    }</p>`,
+  };
+}
