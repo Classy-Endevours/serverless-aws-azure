@@ -16,10 +16,10 @@ export const TokenExpired = () => {
         code: 498
     })
 }
-export const NoUserFound = () => {
-    throw new CustomError('No User Found', {
-        message: 'There is not user record present for the request!',
-        code: 401
+export const NoRecordFound = () => {
+    throw new CustomError('No Record Found', {
+        message: 'There is no record present for the request!',
+        code: 404
     })
 }
 export const NoDataFound = () => {

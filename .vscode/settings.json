@@ -1,6 +1,8 @@
 {
     "cSpell.words": [
         "api-secret",
-        "JWKS"
+        "JWKS",
+        "SENDGRID",
+        "venv"
     ]
 }
