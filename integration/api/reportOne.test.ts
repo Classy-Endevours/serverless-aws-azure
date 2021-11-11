@@ -32,7 +32,7 @@ describe("Integration test for find One api", () => {
     });
     const response = await findOne({
       pathParameters: {
-        id: inputResponse.id + 1
+        id: inputResponse.id + 1000
       }
     });
     expect(response?.statusCode).toEqual(404);
