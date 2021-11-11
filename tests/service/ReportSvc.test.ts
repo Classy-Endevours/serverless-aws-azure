@@ -12,6 +12,10 @@ jest.mock("../../lib/uploadObject", () => ({
 
 jest.mock("../../lib/sendEmail", () => ({
   sendEmail: () => ({ code: 200 }),
+  sendInternalMail: () => ({ code: 200 }),
+  sendExternalMail: () => ({ code: 200 }),
+  createRecordBody: () => ({ subject: "test", html: "empty" }),
+  updateStatusBody: () => ({ subject: "test", html: "empty" }),
 }));
 
 describe("Get Records test cases", () => {
@@ -69,7 +73,7 @@ describe("Get Record test cases", () => {
 describe("Get Attachments test cases", () => {
   it("should return object if id is valid", async () => {
     const mockFn = jest.fn().mockReturnValue({
-      attachmentURL: 'test'
+      attachmentURL: "test",
     });
     reportRepo.findUnique = mockFn;
     const response = await ReportSvc.getAttachment("1");
@@ -138,7 +142,6 @@ describe("Save Report test cases", () => {
       );
     } catch (error) {
       expect(error).toEqual("failed");
-      
     }
   });
 });

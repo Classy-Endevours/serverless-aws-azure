@@ -8,11 +8,13 @@ class ReportRepo extends DatabaseModal {
   findUnique = (options = {}) => {
     return this.db.reports.findUnique(options);
   };
-  
-  create = (data = {}) => {
-    return this.db.reports.create({
-      data,
-    });
+
+  update = (options = {}) => {
+    return this.db.reports.update(options);
+  };
+
+  create = (options = {}) => {
+    return this.db.reports.create(options);
   };
 }
 
