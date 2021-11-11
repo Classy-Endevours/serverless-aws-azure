@@ -28,7 +28,7 @@ describe("Integration test for find One api", () => {
       }),
     });
     const id = JSON.parse(inputResponse.body).data.id
-    const updateResponse: any = await save({
+    const updateResponse: any = await updateStatus({
       pathParameters: {
         id
       },
