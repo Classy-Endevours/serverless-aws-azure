@@ -33,7 +33,7 @@ describe("Integration test for find One api", () => {
         id
       },
       body: JSON.stringify({
-        description: fake.description,
+        status: 'rejected',
       }),
     });
     const response = await findStatus({
