@@ -56,7 +56,7 @@ describe("Integration test for find One api", () => {
     expect(statusContext?.res.body.data.id).toBeGreaterThanOrEqual(body.id);
   });
   it("should return 200 if entry is saved for one record with id with the attachment", async () => {
-    const fake = fakeData.reports.oneReport();
+    const fake = fakeData.reports.oneAPIReport();
     const context: any = {};
     const inputResponse: any = await save(context, {
       body: {

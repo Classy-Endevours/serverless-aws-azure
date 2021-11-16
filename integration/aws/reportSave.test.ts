@@ -52,7 +52,7 @@ describe("Integration test for find One api", () => {
     expect(JSON.parse(response?.body).data.id).toEqual(body.id);
   });
   it("should return 200 if entry is saved for one record with id with the attachment", async () => {
-    const fake = fakeData.reports.oneReport();
+    const fake = fakeData.reports.oneAPIReport();
     const inputResponse: any = await save({
       body: JSON.stringify({
         description: fake.description,
