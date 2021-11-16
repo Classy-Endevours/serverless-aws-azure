@@ -1,4 +1,4 @@
-name: Manually deploy lambda function dispatch
+name: Manually deploy azure function dispatch
 
 on:
   workflow_dispatch:
@@ -10,7 +10,7 @@ on:
 
 jobs:
   deploy:
-    name: deploy
+    name: manual deploy
     runs-on: ubuntu-latest
     strategy:
       matrix:
@@ -23,19 +23,23 @@ jobs:
       uses: actions/setup-node@v1
       with:
         node-version: ${{ matrix.node-version }}
-    - name: Install Dependencies
-      run: yarn install --frozen-lockfile
+    - name: Install Az CLI
+      run: curl -sL https://aka.ms/InstallAzureCLIDeb | sudo bash
     - name: Install Serverless Framework
       run: npm install -g serverless
-    - name: Serverless AWS authentication
-      run: serverless config credentials --provider aws --key ${{ secrets.AWS_ACCESS_KEY_ID }} --secret ${{ secrets.AWS_SECRET_ACCESS_KEY }}
     - name: Create env file
       run: | # cp sample.env.yml env.yml
         cat > env.yml << EOF
-        ${{ secrets.ENV }}
+        ${{ secrets.ENV_AZURE }}
         EOF
+    - name: Install NPM dependencies
+      run: yarn install --frozen-lockfile && SLS_DEBUG=*
     - name: Generate prisma 
       run: yarn gen
-    - name: Deploy Lambda functions
-      run: serverless deploy -s dev
-    
+    - name: Deploy zip to azure
+      run: |
+        export AZURE_SUBSCRIPTION_ID=${{secrets.AZURE_SUBSCRIPTION_ID}}
+        export AZURE_TENANT_ID=${{secrets.AZURE_TENANT_ID}}
+        export AZURE_CLIENT_ID=${{secrets.AZURE_CLIENT_ID}}
+        export AZURE_CLIENT_SECRET=${{secrets.AZURE_CLIENT_SECRET}} 
+        yarn run azure

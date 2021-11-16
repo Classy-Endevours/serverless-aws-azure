@@ -12,9 +12,12 @@ provider:
     JWKS_URI: ${self:custom.environment.JWKS_URI}
     TOKEN_ISSUER: ${self:custom.environment.TOKEN_ISSUER}
     AUDIENCE: ${self:custom.environment.AUDIENCE}
-    imageUploadBucket: ${self:custom.environment.S3_BUCKET_NAME}
+    imageUploadBucket: ${self:custom.environment.aws.S3_BUCKET_NAME}
     region: ${self:provider.region}
-    DATABASE_URL: ${self:custom.environment.DATABASE_URL}
+    DATABASE_URL: ${self:custom.environment.aws.DATABASE_URL}
+    SENDGRID_API_KEY: ${self:custom.environment.SENDGRID_API_KEY}
+    SENDER_EMAIL: ${self:custom.environment.SENDER_EMAIL}
+    RECEIVER_EMAIL: ${self:custom.environment.RECEIVER_EMAIL}
     # AWS_ACCESS_KEY_ID: ${self:custom.environment.AWS_ACCESS_KEY_ID}
     # AWS_SECRET_ACCESS_KEY: ${self:custom.environment.AWS_SECRET_ACCESS_KEY}
   iamRoleStatements:
@@ -22,7 +25,7 @@ provider:
     Action:
       - "s3:*"
     Resource:
-      - "arn:aws:s3:::${self:custom.environment.S3_BUCKET_NAME}/*"
+      - "arn:aws:s3:::${self:custom.environment.aws.S3_BUCKET_NAME}/*"
 # functions 
 functions:
   findRecords:
@@ -30,6 +33,7 @@ functions:
       - api/auth.auth0
       - api/report.find
     memorySize: 128
+    timeout: 50
     description: get all reports
     events:
       - http: 
@@ -38,12 +42,24 @@ functions:
   findRecord:
     handler:
       - api/auth.auth0
-      - api/report.find
+      - api/report.findOne
     memorySize: 128
+    timeout: 50
     description: get particular report
     events:
       - http: 
           path: reports/{id}
+          method: get
+  findAttachment:
+    handler:
+      - api/auth.auth0
+      - api/report.findAttachment
+    memorySize: 128
+    timeout: 50
+    description: get particular report
+    events:
+      - http: 
+          path: reports/{id}/attachment
           method: get
   saveRecord:
     handler: 
@@ -55,18 +71,45 @@ functions:
       - http: 
           path: reports
           method: post
-  auth0Authorization:
-    handler: api/auth.auth0
+  updateStatus:
+    handler: 
+      - api/auth.auth0
+      - api/report.updateStatus
+    memorySize: 256
+    timeout: 80
+    description: Update status of the Report in the database
+    events:
+      - http: 
+          path: reports/status/{id}
+          method: put
+  findStatus:
+    handler: 
+      - api/auth.auth0
+      - api/report.findStatus
+    memorySize: 256
+    timeout: 80
+    description: Get status of the Report from the database
+    events:
+      - http: 
+          path: reports/status/{id}
+          method: get
+  # auth0Authorization:
+  #   handler: api/auth.auth0
 
 # plugins
 plugins:
   - serverless-offline
   - serverless-middleware
-  - serverless-plugin-typescript
+  - serverless-webpack
+  # - serverless-plugin-typescript
 
 
 # custom object
 custom:
+  webpack:
+    webpackConfig: 'webpack.config.js' # Name of webpack configuration file
+    includeModules: true # Node modules configuration for packaging
+    packager: 'npm' # Packager that will be used to package your external modules
   defaultStage: dev
   environment: ${file(env.yml):${self:provider.stage}, file(env.yml):dev}
   imageUploadBucket: serverless-node-aws-azur-serverlessdeploymentbuck-qtqy108vlk1h
@@ -103,5 +146,13 @@ resources:
 
 # package
 package:
-  exclude:
+  exclude:    
+    - .git/**
+    - api/azure/**
+    - tests/**
+    - node_modules/@azure/**
+    - node_modules/@types/**
+    - node_modules/typescript/**
     - node_modules/serverless-offline/**
+    - node_modules/serverless-azure-functions/**
+    - node_modules/@azure/storage-blob/**

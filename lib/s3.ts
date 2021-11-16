@@ -1,9 +1,5 @@
 import * as AWS from "aws-sdk";
-// AWS.config.update({
-//   accessKeyId: process.env.AWS_ACCESS_KEY_ID,
-//   secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
-//   region: "us-east-1",
-// });
+import logger from "../logger";
 const s3 = new AWS.S3();
 
 export const S3UploadObject = async (body) => {
@@ -11,13 +7,14 @@ export const S3UploadObject = async (body) => {
     try {
       s3.putObject(body, function (err, data) {
         if (err) {
-          console.log("Some error occurred: ", err);
+          logger.error("Some error occurred: ", err);
           reject(err);
         }
-        resolve(data);
+        const attachmentURL = `https://${process.env.imageUploadBucket}.s3.amazonaws.com/${body.Key}`;
+        resolve(attachmentURL);
       });
     } catch (error) {
-      console.log("Error.uploadObject.catch: ", error);
+      logger.error("Error.uploadObject.catch: ", error);
       reject(error);
     }
   });
