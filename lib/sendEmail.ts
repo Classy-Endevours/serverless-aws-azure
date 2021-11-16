@@ -3,7 +3,7 @@ import logger from "../logger";
 
 export const sendInternalMail = async (body: any) => {
   const { RECEIVER_EMAIL, SENDER_EMAIL } = process.env;
-  const tmReceiver = RECEIVER_EMAIL.split(",");
+  const tmReceiver = RECEIVER_EMAIL?.split(",");
   return await sendEmail(body, tmReceiver, SENDER_EMAIL);
 };
 

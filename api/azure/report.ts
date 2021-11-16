@@ -10,11 +10,11 @@ export const find = async (context, event) => {
   try {
     const authResponse = await auth0(context, event);
     const data = await ReportSvc.getRecords();
-    context.res = response.createAzure(200, {
+    return context.res = response.createAzure(200, {
       data
     });
   } catch (error) {
-    context.res = response.failedAzure(error);
+    return context.res = response.failedAzure(error);
   }
 };
 
@@ -25,11 +25,11 @@ export const findOne = async (context, event) => {
       BadRequest();
     }
     const data = await ReportSvc.getRecord(context?.bindingData?.id);
-    context.res = response.createAzure(200, {
+    return context.res = response.createAzure(200, {
       data
     });
   } catch (error) {
-    context.res = response.failedAzure(error);
+    return context.res = response.failedAzure(error);
   }
 };
 
@@ -40,11 +40,11 @@ export const findAttachment = async (context, event) => {
       BadRequest();
     }
     const data = await ReportSvc.getAttachment(context?.bindingData?.id);
-    context.res = response.createAzure(200, {
+    return context.res = response.createAzure(200, {
       data
     });
   } catch (error) {
-    context.res = response.failedAzure(error);
+    return context.res = response.failedAzure(error);
   }
 };
 
@@ -82,11 +82,11 @@ export const save = async (context, event) => {
     );
 
     // const url = `https://${process.env.imageUploadBucket}.s3-${process.env.region}.amazonaws.com/${key}`;
-    context.res = response.createAzure(200, {
+    return context.res = response.createAzure(200, {
       data
     });
   } catch (error) {
-    context.res = response.failedAzure(error);
+    return context.res = response.failedAzure(error);
   }
 };
 
@@ -107,11 +107,11 @@ export const updateStatus = async (context, event) => {
       input.comments = comments;
     }
     const data = await ReportSvc.updateStatus(context?.bindingData?.id, input);
-    context.res = response.createAzure(200, {
+    return context.res = response.createAzure(200, {
       data
     });
   } catch (error) {
-    context.res = response.failedAzure(error);
+    return context.res = response.failedAzure(error);
   }
 };
 
@@ -122,10 +122,10 @@ export const findStatus = async (context, event) => {
       BadRequest();
     }
     const data = await ReportSvc.getStatus(context?.bindingData?.id);
-    context.res = response.createAzure(200, {
+    return context.res = response.createAzure(200, {
       data
     });
   } catch (error) {
-    context.res = response.failedAzure(error);
+    return context.res = response.failedAzure(error);
   }
 };

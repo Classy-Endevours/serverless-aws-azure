@@ -13,6 +13,7 @@
     "coverage": "cross-env NODE_ENV=test jest --coverage --watchAll=false",
     "test": "cross-env NODE_ENV=test jest ./tests",
     "test:integration": "cross-env NODE_ENV=test jest --testPathPattern=integration",
+    "test:integration:coverage": "cross-env NODE_ENV=test jest --coverage --watchAll=false",
     "gen": "prisma generate",
     "migrate-prod": "prisma migrate deploy",
     "migrate": "prisma migrate dev",

@@ -1,6 +1,9 @@
-import { findOne } from "../../api/report";
+import { findOne } from "../../api/azure/report";
 import { prisma } from "../../repo";
 import fakeData from "../__mocks__/faker";
+jest.mock("../../api/azure/auth", () => ({
+  auth0: () => ({ status: 200 }),
+}));
 
 describe("Integration test for find One api", () => {
   beforeEach(async () => {
@@ -17,24 +20,28 @@ describe("Integration test for find One api", () => {
     const inputResponse = await prisma.reports.create({
       data: input,
     });
-    const response = await findOne({
-      pathParameters: {
-        id: inputResponse.id
-      }
-    });
-    expect(response?.statusCode).toEqual(200);
-    expect(JSON.parse(response?.body).data.id).toEqual(inputResponse.id);
+    const context: any = {
+      bindingData: {
+        id: inputResponse.id,
+      },
+    };
+    await findOne(context, {});
+    expect(context?.res.status).toEqual(200);
+    console.log(context?.res.body);
+    
+    expect(context?.res.body.data.id).toEqual(inputResponse.id);
   });
   it("should return 404 if entry is not present for one record with id", async () => {
     const input: any = fakeData.reports.oneReport();
     const inputResponse = await prisma.reports.create({
       data: input,
     });
-    const response = await findOne({
-      pathParameters: {
-        id: inputResponse.id + 1
-      }
-    });
-    expect(response?.statusCode).toEqual(404);
+    const context: any = {
+      bindingData: {
+        id: inputResponse.id + 1000,
+      },
+    };
+    await findOne(context, {});
+    expect(context?.res.status).toEqual(404);
   });
 });

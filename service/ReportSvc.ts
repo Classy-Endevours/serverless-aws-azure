@@ -85,7 +85,7 @@ class ReportSvc {
         });
         if (!data) {
           NoRecordFound();
-        } else if (data.statusReports.length <= 0) {
+        } else if (!data.statusReports.length) {
           NoRecordFound();
         }
         resolve(data.statusReports);

@@ -5,6 +5,9 @@ azure-config-deploy.json
 local.settings.json
 .middleware
 env.yml
+env.test.yml
+env.local.yml
+env.prod.yml
 envprod.yml
 .serverless
 *.seed
